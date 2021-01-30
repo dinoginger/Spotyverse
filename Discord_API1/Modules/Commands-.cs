@@ -21,7 +21,6 @@ namespace Discord_API1.Modules
             }
 
             var activities = user.Activities;
-            //await Context.Channel.SendMessageAsync($"User is currently {user.Activity.Type} {user.Activity}");
             foreach (var activity in activities)
             {
                 if (activity is SpotifyGame spot)
@@ -61,7 +60,7 @@ namespace Discord_API1.Modules
         [Command("listen", RunMode = RunMode.Async)]
         public async Task runmode(SocketUser user = null)
         {
-            int n = 3;
+            int n = 3; //скільки разів пісню чекаємо?
             string[] title = new string[n];
             string[] artist = new string[n];
             if (user == null)
@@ -72,8 +71,8 @@ namespace Discord_API1.Modules
             await Context.Channel.SendMessageAsync("starting...");
             for (int i = 0; i < n; i++)
             {
-                var activities = user.Activities;
-                foreach (var activity in activities)
+                var activities = user.Activities; 
+                foreach (var activity in activities) //тайпчек всіх активностей на спотіфай
                 {
                     if (activity is SpotifyGame spot)
                     {
@@ -88,17 +87,13 @@ namespace Discord_API1.Modules
                 }
             }
 
-            title = title.Distinct().ToArray();
+            title = title.Distinct().ToArray(); //видалення дублікованих пісень
 
 
             for (int i = 0; i <  title.Length; i++)
             {
                 await Context.Channel.SendMessageAsync($"{title[i]} by {artist[i]}");
             }
-            
-            
-            
-            
         }
     }
 }
