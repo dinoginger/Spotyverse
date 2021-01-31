@@ -11,7 +11,7 @@ namespace Discord_API1.Modules
 {
     public class Test : ModuleBase<SocketCommandContext>
     {
-      
+
         [Command("Test")]
         public async Task UserInfo(SocketUser user = null)
         {
@@ -25,14 +25,15 @@ namespace Discord_API1.Modules
             {
                 if (activity is SpotifyGame spot)
                 {
-                    await Context.Channel.SendMessageAsync($"You are currently listening to {spot.TrackTitle} by {spot.Artists.First()}");
+                    await Context.Channel.SendMessageAsync(
+                        $"You are currently listening to {spot.TrackTitle} by {spot.Artists.First()}");
                 }
             }
         }
 
         [Command("help")]
         public async Task help()
-        { 
+        {
             var a = new Discord.EmbedBuilder();
             a.WithTitle("Commands");
             a.WithDescription("General Commands\n-- .help // Gives list of commands to use");
@@ -60,7 +61,8 @@ namespace Discord_API1.Modules
         [Command("listen", RunMode = RunMode.Async)]
         public async Task runmode(SocketUser user = null)
         {
-            int n = 3; //скільки разів пісню чекаємо?
+            var embedBuilder = new EmbedBuilder(); //запихаємо все в красивий ембед
+            int n = 3; //скільки разів пісню прочекуємо?
             string[] title = new string[n];
             string[] artist = new string[n];
             if (user == null)
@@ -71,29 +73,60 @@ namespace Discord_API1.Modules
             await Context.Channel.SendMessageAsync("starting...");
             for (int i = 0; i < n; i++)
             {
-                var activities = user.Activities; 
+                var activities = user.Activities;
                 foreach (var activity in activities) //тайпчек всіх активностей на спотіфай
                 {
                     if (activity is SpotifyGame spot)
                     {
                         title[i] = spot.TrackTitle;
                         artist[i] = spot.Artists.First();
-                        Console.WriteLine($"{i+1} song recieved");
+                        Console.WriteLine($"{i + 1} song recieved");
                     }
                 }
 
-                if (i != n-1){
-                    await Task.Delay(20000);
+                if (i != n - 1) //Для того, щоб після останньої пісні вже не робив ділей
+                {
+                    await Task.Delay(30000);
                 }
             }
 
             title = title.Distinct().ToArray(); //видалення дублікованих пісень
+            embedBuilder.WithAuthor($"for : {user.Username}") //автор 
+                .WithTitle("List of songs you listened to :") //Титулка
+                .WithCurrentTimestamp() //часова марка, каррент коли була відіслана
+                .WithColor(Color.Green);
 
-
-            for (int i = 0; i <  title.Length; i++)
+            
+            for (int i = 0; i < title.Length; i++)
             {
-                await Context.Channel.SendMessageAsync($"{title[i]} by {artist[i]}");
+                if (title[i] != null)
+                {
+                    embedBuilder.AddField($"{i+1}.", $"{title[i]} - {artist[i]}", inline: false); //Додаємо поля, інлайн фолс бо якщо тру то робляться колонки
+                }
             }
+            await Context.Channel.SendMessageAsync("", false, embedBuilder.Build()); //висилаємо ембед
+        }
+
+        ///ЗРОБИТИ ВСЕ ЦЕ В СЕРВІСІ А НЕ В ТАСКУ
+
+        [Command("testembed")]
+        public async Task SendRichEmbedAsync()
+        {
+            var embed = new EmbedBuilder();
+            
+            // Or with methods
+            embed.AddField("Field title",
+                    "Field value. I also support [hyperlink markdown](https://example.com)!")
+                .WithAuthor(Context.Client.CurrentUser)
+                .WithFooter(footer => footer.Text = "I am a footer.")
+                .WithColor(Color.Blue)
+                .WithTitle("I overwrote \"Hello world!\"")
+                .WithDescription("I am a description.")
+                .WithUrl("https://example.com")
+                .WithCurrentTimestamp();
+
+            //Your embed needs to be built before it is able to be sent
+            await ReplyAsync(embed: embed.Build());
         }
     }
 }

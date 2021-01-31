@@ -14,7 +14,7 @@ namespace Discord_API1
         private async Task StartAsync()
         {
             _client = new DiscordSocketClient();
-            await _client.LoginAsync(TokenType.Bot, "ODAyNTQ0MTY2ODYwMDk1NDg5.YAwxfw.1FANeB9IAtVFHhHpmQRAd-zkdaU");
+            await _client.LoginAsync(TokenType.Bot, "ODAyNTQ0MTY2ODYwMDk1NDg5.YAwxfw.PaDEkHOOVQ1CUUfchM3OyzlIouU");
 
             await _client.StartAsync(); //?????
             var _handler = new CommandHandler(_client);
