@@ -16,7 +16,7 @@ namespace Discord_API1.Service
         public static async Task<Tuple<int, string>> Search_song(string songName)
         {
             
-            string query = HttpUtility.UrlEncode(songName, Encoding.Default);
+            string query = HttpUtility.UrlEncode(songName, Encoding.ASCII);
             
             //Connection of Bot client
             var config = SpotifyClientConfig.CreateDefault();
@@ -25,23 +25,30 @@ namespace Discord_API1.Service
             var response = await new OAuthClient(config).RequestToken(request);
             var spotify = new SpotifyClient(config.WithToken(response.AccessToken));
             // --- 
-
-            var result = await spotify.Search.Item(new SearchRequest(SearchRequest.Types.Track, query)); //Sending search request and creating json
+            try
+            {
+                var result = await spotify.Search.Item(new SearchRequest(SearchRequest.Types.Track, query)); //Sending search request and creating json
+            
             string data_json = result.Tracks.ToJson();
             
             dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(data_json);
 
             var link = data.Items[0].ExternalUrls.spotify; //АДРЕСА url ТРЕКУ
+            Console.WriteLine(link.ToString());
             var popularity = data.Items[0].Popularity; //популярність треку
-            if (link == null || popularity == null)
+            Console.WriteLine(popularity.ToString());
+            
+            return Tuple.Create((int)popularity, link.ToString());
+            
+            
+            }
+            catch (Exception e)
             {
+                Console.WriteLine("arg exch thrown");
                 throw new ArgumentException($"Song \"{songName}\" was not found.");
                 
             }
-            else
-            {
-                return Tuple.Create((int)popularity, link.ToString());
-            }
+
         }
     }
 }

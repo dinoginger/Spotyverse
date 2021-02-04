@@ -110,7 +110,7 @@ namespace Discord_API1.Modules
 
         ///ЗРОБИТИ ВСЕ ЦЕ В СЕРВІСІ А НЕ В ТАСКУ
         [Command("Search")]
-        public async Task lememe(string msg)
+        public async Task search([Remainder] string msg)
         {
             
             if (msg != null)
@@ -119,15 +119,16 @@ namespace Discord_API1.Modules
                 try
                 {
                     var tuple = SpotifyService.Search_song(msg);
-                    await Context.Channel.SendMessageAsync($"Spotify link to song is [this]({tuple.Result.Item2})");
+                    await Context.Channel.SendMessageAsync($"Spotify link to song is ({tuple.Result.Item2})");
                     await Context.Channel.SendMessageAsync($"Spotify song popularity is {tuple.Result.Item1}");
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("we fckd up");
-                    await Context.Channel.SendMessageAsync($"{e}");
-                    throw;
+                    Console.WriteLine("we messed up");
+                    await Context.Channel.SendMessageAsync($"{e.InnerException.Message}");
+                    //throw;
                 }
+                
 
             }
             else
