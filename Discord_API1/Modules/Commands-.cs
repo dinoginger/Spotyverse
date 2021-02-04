@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Discord_API1.Service;
 
 namespace Discord_API1.Modules
 {
@@ -86,7 +87,7 @@ namespace Discord_API1.Modules
 
                 if (i != n - 1) //Для того, щоб після останньої пісні вже не робив ділей
                 {
-                    await Task.Delay(30000);
+                    await Task.Delay(5000);
                 }
             }
 
@@ -101,12 +102,39 @@ namespace Discord_API1.Modules
             {
                 if (title[i] != null)
                 {
-                    embedBuilder.AddField($"{i+1}.", $"{title[i]} - {artist[i]}", inline: false); //Додаємо поля, інлайн фолс бо якщо тру то робляться колонки
+                    embedBuilder.AddField("", $"{title[i]} - {artist[i]}", inline: false); //Додаємо поля, інлайн фолс бо якщо тру то робляться колонки
                 }
             }
             await Context.Channel.SendMessageAsync("", false, embedBuilder.Build()); //висилаємо ембед
         }
 
         ///ЗРОБИТИ ВСЕ ЦЕ В СЕРВІСІ А НЕ В ТАСКУ
+        [Command("Search")]
+        public async Task lememe(string msg)
+        {
+            
+            if (msg != null)
+            {
+                Console.WriteLine("we in!");
+                try
+                {
+                    var tuple = SpotifyService.Search_song(msg);
+                    await Context.Channel.SendMessageAsync($"Spotify link to song is [this]({tuple.Result.Item2})");
+                    await Context.Channel.SendMessageAsync($"Spotify song popularity is {tuple.Result.Item1}");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("we fckd up");
+                    await Context.Channel.SendMessageAsync($"{e}");
+                    throw;
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("msg is null");
+            }
+            
+        }
     }
 }

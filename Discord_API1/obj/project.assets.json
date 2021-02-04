@@ -94,13 +94,25 @@
           "lib/netstandard1.0/_._": {}
         }
       },
-      "Newtonsoft.Json/12.0.2": {
+      "Newtonsoft.Json/12.0.3": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         },
         "runtime": {
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        }
+      },
+      "SpotifyAPI.Web/6.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.3"
+        },
+        "compile": {
+          "lib/netstandard2.1/SpotifyAPI.Web.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/SpotifyAPI.Web.dll": {}
         }
       },
       "System.Collections/4.3.0": {
@@ -297,6 +309,15 @@
         "compile": {
           "ref/netstandard1.3/System.Threading.Tasks.dll": {}
         }
+      },
+      "Unosquare.Swan.Lite/3.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Swan.Lite.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Swan.Lite.dll": {}
+        }
       }
     }
   },
@@ -419,10 +440,10 @@
         "runtime.json"
       ]
     },
-    "Newtonsoft.Json/12.0.2": {
-      "sha512": "rTK0s2EKlfHsQsH6Yx2smvcTCeyoDNgCW7FEYyV01drPlh2T243PR2DiDXqtC5N4GDm4Ma/lkxfW5a/4793vbA==",
+    "Newtonsoft.Json/12.0.3": {
+      "sha512": "6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
       "type": "package",
-      "path": "newtonsoft.json/12.0.2",
+      "path": "newtonsoft.json/12.0.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -445,8 +466,26 @@
         "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml",
         "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll",
         "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
-        "newtonsoft.json.12.0.2.nupkg.sha512",
-        "newtonsoft.json.nuspec"
+        "newtonsoft.json.12.0.3.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
+      ]
+    },
+    "SpotifyAPI.Web/6.0.0": {
+      "sha512": "wEj3D6aqVt5mhkDoMbeDvVzqL4WyqDzG75hRMnELGCIhWK/ha5XkOpusilanCmd2+NH/fsNjD8W9o7An+p7Weg==",
+      "type": "package",
+      "path": "spotifyapi.web/6.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net5.0/SpotifyAPI.Web.dll",
+        "lib/net5.0/SpotifyAPI.Web.xml",
+        "lib/netstandard2.0/SpotifyAPI.Web.dll",
+        "lib/netstandard2.0/SpotifyAPI.Web.xml",
+        "lib/netstandard2.1/SpotifyAPI.Web.dll",
+        "lib/netstandard2.1/SpotifyAPI.Web.xml",
+        "spotifyapi.web.6.0.0.nupkg.sha512",
+        "spotifyapi.web.nuspec"
       ]
     },
     "System.Collections/4.3.0": {
@@ -1443,11 +1482,28 @@
         "system.threading.tasks.4.3.0.nupkg.sha512",
         "system.threading.tasks.nuspec"
       ]
+    },
+    "Unosquare.Swan.Lite/3.1.0": {
+      "sha512": "X3s5QE/KMj3WAPFqFve7St+Ds10BB50u8kW8PmKIn7FVkn7yEXe9Yxr2htt1WV85DRqfFR0MN/BUNHkGHtL4OQ==",
+      "type": "package",
+      "path": "unosquare.swan.lite/3.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net461/Swan.Lite.dll",
+        "lib/net461/Swan.Lite.xml",
+        "lib/netstandard2.0/Swan.Lite.dll",
+        "lib/netstandard2.0/Swan.Lite.xml",
+        "unosquare.swan.lite.3.1.0.nupkg.sha512",
+        "unosquare.swan.lite.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "Discord.Net >= 2.3.0-dev-20210121.1"
+      "Discord.Net >= 2.3.0-dev-20210121.1",
+      "SpotifyAPI.Web >= 6.0.0",
+      "Unosquare.Swan.Lite >= 3.1.0"
     ]
   },
   "packageFolders": {
@@ -1491,6 +1547,14 @@
           "Discord.Net": {
             "target": "Package",
             "version": "[2.3.0-dev-20210121.1, )"
+          },
+          "SpotifyAPI.Web": {
+            "target": "Package",
+            "version": "[6.0.0, )"
+          },
+          "Unosquare.Swan.Lite": {
+            "target": "Package",
+            "version": "[3.1.0, )"
           }
         },
         "imports": [
