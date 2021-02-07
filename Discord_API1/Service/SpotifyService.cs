@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Data.Common;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using SpotifyAPI.Web;
 using Swan;
 
@@ -16,8 +13,6 @@ namespace Discord_API1.Service
         public static async Task<Tuple<int, string>> Search_song(string songName)
         {
             
-            string query = HttpUtility.UrlEncode(songName, Encoding.ASCII);
-            
             //Connection of Bot client
             var config = SpotifyClientConfig.CreateDefault();
             var request =
@@ -27,7 +22,7 @@ namespace Discord_API1.Service
             // --- 
             try
             {
-                var result = await spotify.Search.Item(new SearchRequest(SearchRequest.Types.Track, query)); //Sending search request and creating json
+                var result = await spotify.Search.Item(new SearchRequest(SearchRequest.Types.All, songName)); //Sending search request and creating json
             
             string data_json = result.Tracks.ToJson();
             
