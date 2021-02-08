@@ -5,6 +5,7 @@ using Swan;
 
 namespace Discord_API1.Service
 {
+    
     public class SpotifyService
     {
         private static string Bot_id = "ef039d13351645e98dee0db229295352";  //Id of my spotify app
@@ -29,9 +30,7 @@ namespace Discord_API1.Service
             dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(data_json);
 
             var link = data.Items[0].ExternalUrls.spotify; //АДРЕСА url ТРЕКУ
-            Console.WriteLine(link.ToString());
             var popularity = data.Items[0].Popularity; //популярність треку
-            Console.WriteLine(popularity.ToString());
             
             return Tuple.Create((int)popularity, link.ToString());
             
@@ -39,7 +38,6 @@ namespace Discord_API1.Service
             }
             catch (Exception e)
             {
-                Console.WriteLine("arg exch thrown");
                 throw new ArgumentException($"Song \"{songName}\" was not found.");
                 
             }
