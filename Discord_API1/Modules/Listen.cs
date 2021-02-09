@@ -18,7 +18,7 @@ namespace Discord_API1.Modules
         ///Default value of minutes command !listen runs, if not overloaded with minutes parameter
         private const int default_time = 5; //--minutes.
         
-        private const int wait_seconds = 30; //--seconds \\\\\Period of time we wait before checking song again
+        private const int wait_seconds = 5; //--seconds \\\\\Period of time we wait before checking song again
         
         
         
@@ -83,13 +83,14 @@ namespace Discord_API1.Modules
                 Console.WriteLine(data.songname);
                 Console.WriteLine(data.popularity);
                 popularities[dd] = data.popularity;
+                dd++;
             }
 
             try
             {
                 embedBuilder.WithAuthor($"for {user.Username}")
                     .WithTitle($"How basic your music taste is, based on {popularities.Length} songs :")
-                    .AddField("============", $"Your playlist is {Math.Round(popularities.Average(), 2)}% basic.", false)
+                    .AddField("============", $"Your playlist is {Math.Round(popularities.Average(), 1)}% basic.", false)
                     .AddField("============", " :) ",false) 
                     .WithCurrentTimestamp()
                     .WithColor(Color.Purple);
@@ -126,7 +127,7 @@ namespace Discord_API1.Modules
                 return;
             }
 
-            int p = (int)minutes*60/wait_seconds; //How many times cycle will run
+            int p = (int)(minutes*60)/wait_seconds; //How many times cycle will run
             song_data[] songData = new song_data[p];
             int d = 0;
             string[] artist = new string[p];
@@ -182,13 +183,14 @@ namespace Discord_API1.Modules
                 Console.WriteLine(data.songname);
                 Console.WriteLine(data.popularity);
                 popularities[dd] = data.popularity;
+                dd++;
             }
 
             try
             {
                 embedBuilder.WithAuthor($"for {user.Username}")
                     .WithTitle($"How basic your music taste is, based on {popularities.Length} songs :")
-                    .AddField("============", $"Your playlist is {Math.Round(popularities.Average(), 2)}% basic.", false)
+                    .AddField("============", $"Your playlist is {Math.Round(popularities.Average(), 1)}% basic.", false)
                     .AddField("============", " :) ",false) 
                     .WithCurrentTimestamp()
                     .WithColor(Color.Purple);
@@ -198,8 +200,9 @@ namespace Discord_API1.Modules
             {
                 Console.WriteLine(e.Message);
                 
+                
             }
-           
+
         }
     }
 }
