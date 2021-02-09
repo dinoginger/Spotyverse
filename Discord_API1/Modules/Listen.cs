@@ -18,7 +18,7 @@ namespace Discord_API1.Modules
         ///Default value of minutes command !listen runs, if not overloaded with minutes parameter
         private const int default_time = 5; //--minutes.
         
-        private const int wait_seconds = 5; //--seconds \\\\\Period of time we wait before checking song again
+        private const int wait_seconds = 30; //--seconds \\\\\Period of time we wait before checking song again
         
         
         
