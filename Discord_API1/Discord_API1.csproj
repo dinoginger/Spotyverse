@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Discord.Addons.Preconditions" Version="2.2.0-dev3" />
       <PackageReference Include="Discord.Net" Version="2.3.0-dev-20210121.1" />
       <PackageReference Include="SpotifyAPI.Web" Version="6.0.0" />
       <PackageReference Include="Unosquare.Swan.Lite" Version="3.1.0" />

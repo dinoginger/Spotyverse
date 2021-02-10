@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
+using Discord.Addons.Preconditions;
 using Discord.Commands;
 using Discord.WebSocket;
 using Discord_API1.Service;
@@ -23,8 +24,14 @@ namespace Discord_API1.Modules
         
         
         [Command("listen", RunMode = RunMode.Async)]
+        [Ratelimit(1,5,Measure.Minutes,RatelimitFlags.None)]
         public async Task listen(SocketUser user = null)
         {
+            if (user == null)
+            {
+                user = Context.User;
+            }
+
             var embedBuilder = new EmbedBuilder();
 
             int p = default_time*60/wait_seconds; //how many times cycle will run
@@ -32,11 +39,6 @@ namespace Discord_API1.Modules
             int d = 0;
             string[] artist = new string[p];
             string[] title = new string[p];
-            if (user == null)
-            {
-                user = Context.User;
-            }
-
             await Context.Channel.SendMessageAsync("starting...");
             for (int i = 0; i < p; i++)
             {
@@ -116,6 +118,7 @@ namespace Discord_API1.Modules
         
         
         [Command("listen", RunMode = RunMode.Async)]
+        [Ratelimit(1,5,Measure.Minutes,RatelimitFlags.None)]
         public async Task listen(float minutes, SocketUser user = null) //Перегруз де юзер задає скільки часу він хоче щоб його слухали
         
         {

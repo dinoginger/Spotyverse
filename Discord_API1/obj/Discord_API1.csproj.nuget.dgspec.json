@@ -39,6 +39,10 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "Discord.Addons.Preconditions": {
+              "target": "Package",
+              "version": "[2.2.0-dev3, )"
+            },
             "Discord.Net": {
               "target": "Package",
               "version": "[2.3.0-dev-20210121.1, )"

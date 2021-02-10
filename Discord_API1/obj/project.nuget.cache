@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "VE9j8qZC2THW94nzrNJqJ6vXW8mbyCc01T4v8Ju/z0dmFNAK9cPu0mhiWTdsmLtXCPm9qGrRMtYP84pIsrpDlg==",
+  "dgSpecHash": "TdiM2MY9JSuIDKx5UKcW4fv1LuuFd12jXKR/jrcylllMfGFmXJ5/H68nRTbfqQn48q79UcJM7JK/ULwOCiLUjQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Марко\\OneDrive\\Desktop\\Discord\\TestBotStuff\\TestBot_\\Discord_API1\\Discord_API1.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Марко\\.nuget\\packages\\discord.addons.preconditions\\2.2.0-dev3\\discord.addons.preconditions.2.2.0-dev3.nupkg.sha512",
     "C:\\Users\\Марко\\.nuget\\packages\\discord.net\\2.3.0-dev-20210121.1\\discord.net.2.3.0-dev-20210121.1.nupkg.sha512",
     "C:\\Users\\Марко\\.nuget\\packages\\discord.net.commands\\2.3.0-dev-20210121.1\\discord.net.commands.2.3.0-dev-20210121.1.nupkg.sha512",
     "C:\\Users\\Марко\\.nuget\\packages\\discord.net.core\\2.3.0-dev-20210121.1\\discord.net.core.2.3.0-dev-20210121.1.nupkg.sha512",
@@ -30,6 +31,7 @@
     "C:\\Users\\Марко\\.nuget\\packages\\system.text.encoding\\4.3.0\\system.text.encoding.4.3.0.nupkg.sha512",
     "C:\\Users\\Марко\\.nuget\\packages\\system.threading\\4.3.0\\system.threading.4.3.0.nupkg.sha512",
     "C:\\Users\\Марко\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
+    "C:\\Users\\Марко\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.1\\system.threading.tasks.extensions.4.5.1.nupkg.sha512",
     "C:\\Users\\Марко\\.nuget\\packages\\unosquare.swan.lite\\3.1.0\\unosquare.swan.lite.3.1.0.nupkg.sha512"
   ],
   "logs": []
