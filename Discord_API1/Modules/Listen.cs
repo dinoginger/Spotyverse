@@ -6,13 +6,15 @@ using Discord.Addons.Preconditions;
 using Discord.Commands;
 using Discord.WebSocket;
 using Discord_API1.Service;
+using Swan;
 
 namespace Discord_API1.Modules
 {
     public struct song_data
     {
         public string songname;
-        public int popularity;
+        public int popularity; 
+        public string genre_string;
     }
     public class Listen : ModuleBase<SocketCommandContext>
     {
@@ -51,6 +53,7 @@ namespace Discord_API1.Modules
                         {
                             var tuple = SpotifyService.Search_song(spot.TrackTitle);
                             songData[d].popularity = tuple.Result.Item1;
+                            
                             songData[d].songname = spot.TrackTitle;
                             Console.WriteLine(spot.TrackTitle);
                             Console.WriteLine($"{d + 1} song recieved");
@@ -150,11 +153,14 @@ namespace Discord_API1.Modules
                     {
                         try
                         {
-                            var tuple = SpotifyService.Search_song(spot.TrackTitle);
+                            Console.WriteLine($"{d + 1} song recieved");
+                            var tuple = SpotifyService.Search_song(spot.TrackTitle + " " + spot.Artists.First());
                             songData[d].popularity = tuple.Result.Item1;
+                            songData[d].genre_string = tuple.Result.Item2;
+                            
                             songData[d].songname = spot.TrackTitle;
                             Console.WriteLine(spot.TrackTitle);
-                            Console.WriteLine($"{d + 1} song recieved");
+                            Console.WriteLine(songData[d].genre_string);
                             d++;
                         }
                         catch (Exception e)
@@ -170,33 +176,38 @@ namespace Discord_API1.Modules
                 }
             }
             
-            Console.WriteLine("\n");
             
-            foreach (var data in songData)
-            {
-                Console.WriteLine(data.songname);
-                Console.WriteLine(data.popularity);
-            }
             Console.WriteLine("\n\n");
-            var a = songData.Distinct();
-            int[] popularities = new int[a.Count()];
+            var distinct_data = songData.Distinct();
+            int[] popularities = new int[distinct_data.Count()];
             int dd = 0;
-            foreach (var data in a)
+            string distinct_genres = "";
+            foreach (var data in distinct_data)
             {
                 Console.WriteLine(data.songname);
-                Console.WriteLine(data.popularity);
+                Console.WriteLine(data.genre_string);
                 popularities[dd] = data.popularity;
                 dd++;
+                distinct_genres = distinct_genres + "+" +  data.genre_string;
             }
-
+            
+            Console.WriteLine($"\n\n{distinct_genres}");
+            var topGenres = SpotifyService.GetTopGenres(distinct_genres);
             try
             {
                 embedBuilder.WithAuthor($"for {user.Username}")
                     .WithTitle($"How basic your music taste is, based on {popularities.Length} songs :")
                     .AddField("============", $"Your playlist is {Math.Round(popularities.Average(), 1)}% basic.", false)
-                    .AddField("============", " :) ",false) 
                     .WithCurrentTimestamp()
                     .WithColor(Color.Purple);
+                if (topGenres.Length > 2)
+                {
+                    embedBuilder.AddField("============", $"Top genres are : {topGenres}", false);
+                }
+                else
+                {
+                    embedBuilder.AddField("============", "^_^", false);
+                }
                 await Context.Channel.SendMessageAsync("", false, embedBuilder.Build()); 
             }
             catch (Exception e)
