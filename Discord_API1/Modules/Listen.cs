@@ -8,27 +8,33 @@ using Discord.WebSocket;
 using Discord_API1.Service;
 using Swan;
 
+
 namespace Discord_API1.Modules
 {
-    public struct song_data
+     
+     public class Listen : ModuleBase<SocketCommandContext>
     {
-        public string songname;
-        public int popularity; 
-        public string genre_string;
-    }
-    public class Listen : ModuleBase<SocketCommandContext>
-    {
+        private struct song_data
+        {
+            public string songname;
+            public int popularity; 
+            public string genre_string;
+        } 
+        
         ///Default value of minutes command !listen runs, if not overloaded with minutes parameter
         private const int default_time = 5; //--minutes.
+
+        private const int command_cooldown = 5;//--minutes \\\\Determines cooldown for our listen command;
+        private const string command_cooldownSTR = "5";//for errormessage, duplicate 
         
         private const int wait_seconds = 30; //--seconds \\\\\Period of time we wait before checking song again
-        
-        
-        
+
+
         [Command("listen", RunMode = RunMode.Async)]
-        [Ratelimit(1,5,Measure.Minutes,RatelimitFlags.None)]
-        public async Task listen(SocketUser user = null)
+        [Ratelimit(1,command_cooldown,Measure.Minutes, ErrorMessage = "Sheesh.. :eyes: cooldown of this command is set to 5 minutes!")] //TODO: "Command listen was executed at 15.02.2021 21:10:34." \n change log message when exited with cooldown error
+        public async Task Listen_default(SocketUser user = null)
         {
+            
             if (user == null)
             {
                 user = Context.User;
@@ -121,15 +127,14 @@ namespace Discord_API1.Modules
         
         
         [Command("listen", RunMode = RunMode.Async)]
-        [Ratelimit(1,5,Measure.Minutes,RatelimitFlags.None)]
-        public async Task listen(float minutes, SocketUser user = null) //Перегруз де юзер задає скільки часу він хоче щоб його слухали
-        
+        [Ratelimit(1,5,Measure.Minutes, RatelimitFlags.None)]
+        public async Task Listen_overload1(float minutes, SocketUser user = null) //Перегруз де юзер задає скільки часу він хоче щоб його слухали
         {
             var embedBuilder = new EmbedBuilder();
 
             if (minutes <= 0.5f)
             {
-                Context.Channel.SendMessageAsync("Time period must be more than 0,5 min.");
+                await Context.Channel.SendMessageAsync("Time period must be more than 0,5 min.");
                 return;
             }
 

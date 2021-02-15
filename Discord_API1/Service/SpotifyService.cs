@@ -77,7 +77,7 @@ namespace Discord_API1.Service
             }
 
             return topgenres;
-            //TODO: return string look better, do stuff with slashes
+            //TODO: return genre string look better, do stuff with slashes
 
         }
     }
