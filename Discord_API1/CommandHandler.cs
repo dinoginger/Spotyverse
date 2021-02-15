@@ -30,8 +30,8 @@ namespace Discord_API1
             // the context of the command, and the result returned from the
             // execution in this event.
 
-            // We can tell the user what went wrong
-            if (!string.IsNullOrEmpty(result?.ErrorReason))
+            // We can tell the user what went wrong 
+            if (!string.IsNullOrEmpty(result?.ErrorReason)) //TODO: попроацювати над ерор хендлером більше, після пулу TimeOut бранчу допрацювати і з ним теж
             {
                 await context.Channel.SendMessageAsync(result.ErrorReason);
             }
