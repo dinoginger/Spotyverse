@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Discord;
+using Discord.Addons.Preconditions;
 using Discord.Commands;
 using Discord.WebSocket;
 using Discord_API1.Service;

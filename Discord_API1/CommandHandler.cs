@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Discord;
+using Discord.Addons.Preconditions;
 using Discord.WebSocket;
 using Discord.Commands;
 
@@ -34,12 +35,19 @@ namespace Discord_API1
             if (!string.IsNullOrEmpty(result?.ErrorReason)) //TODO: попроацювати над ерор хендлером більше, після пулу TimeOut бранчу допрацювати і з ним теж
             {
                 await context.Channel.SendMessageAsync(result.ErrorReason);
+                var commandName = command.IsSpecified ? command.Value.Name : "A command";
+                Console.WriteLine($"Command {commandName} was failed to execute at {DateTime.UtcNow}. Reason : {result.Error.Value.ToString()}");
+            }
+            else
+            {
+                var commandName = command.IsSpecified ? command.Value.Name : "A command";
+                Console.WriteLine($"Command {commandName} was executed at {DateTime.UtcNow}.");
+
             }
 
             // ...or even log the result (the method used should fit into
             // your existing log handler)
-            var commandName = command.IsSpecified ? command.Value.Name : "A command";
-            Console.WriteLine($"Command {commandName} was executed at {DateTime.UtcNow}.");
+            
             
         }
         public async Task HandleCommandAsync(SocketMessage msg)
