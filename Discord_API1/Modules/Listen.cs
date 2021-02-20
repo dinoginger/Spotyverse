@@ -11,6 +11,7 @@ using Swan;
 
 namespace Discord_API1.Modules
 {
+    //TODO: Services. telegram saved convo
      
      public class Listen : ModuleBase<SocketCommandContext>
     {

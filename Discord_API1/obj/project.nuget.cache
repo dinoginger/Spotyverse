@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "TdiM2MY9JSuIDKx5UKcW4fv1LuuFd12jXKR/jrcylllMfGFmXJ5/H68nRTbfqQn48q79UcJM7JK/ULwOCiLUjQ==",
+  "dgSpecHash": "tcO6apLbQELmvfnhhk56O1g0yfQPjDg2HqwNu0s8uvAXPEKkAtcjHVr/IDgkZYBJYnIKV84a1Y/LgOxjQS5Pyg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Марко\\OneDrive\\Desktop\\Discord\\TestBotStuff\\TestBot_\\Discord_API1\\Discord_API1.csproj",
   "expectedPackageFiles": [
@@ -11,6 +11,8 @@
     "C:\\Users\\Марко\\.nuget\\packages\\discord.net.rest\\2.3.0-dev-20210121.1\\discord.net.rest.2.3.0-dev-20210121.1.nupkg.sha512",
     "C:\\Users\\Марко\\.nuget\\packages\\discord.net.webhook\\2.3.0-dev-20210121.1\\discord.net.webhook.2.3.0-dev-20210121.1.nupkg.sha512",
     "C:\\Users\\Марко\\.nuget\\packages\\discord.net.websocket\\2.3.0-dev-20210121.1\\discord.net.websocket.2.3.0-dev-20210121.1.nupkg.sha512",
+    "C:\\Users\\Марко\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\6.0.0-preview.1.21102.12\\microsoft.extensions.dependencyinjection.6.0.0-preview.1.21102.12.nupkg.sha512",
+    "C:\\Users\\Марко\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0-preview.1.21102.12\\microsoft.extensions.dependencyinjection.abstractions.6.0.0-preview.1.21102.12.nupkg.sha512",
     "C:\\Users\\Марко\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\Марко\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\Марко\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",

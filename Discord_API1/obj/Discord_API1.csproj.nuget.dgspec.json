@@ -47,6 +47,10 @@
               "target": "Package",
               "version": "[2.3.0-dev-20210121.1, )"
             },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[6.0.0-preview.1.21102.12, )"
+            },
             "SpotifyAPI.Web": {
               "target": "Package",
               "version": "[6.0.0, )"

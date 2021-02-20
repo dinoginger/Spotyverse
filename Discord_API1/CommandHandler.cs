@@ -14,11 +14,13 @@ namespace Discord_API1
     {
         private DiscordSocketClient _client;
         private CommandService _commands;
+        private IServiceProvider _services;
         
-        public CommandHandler(DiscordSocketClient client)
+        public CommandHandler(IServiceProvider services, CommandService commands, DiscordSocketClient client)
         { 
             _client = client;
-            _commands = new CommandService();
+            _commands = commands;
+            _services = services;
             _commands.AddModulesAsync(Assembly.GetEntryAssembly(), null);
             // Hook the execution event
             _commands.CommandExecuted += OnCommandExecutedAsync;

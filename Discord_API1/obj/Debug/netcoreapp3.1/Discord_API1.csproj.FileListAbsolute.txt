@@ -23,3 +23,5 @@ C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\Discord_API1\
 C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\Discord_API1\bin\Debug\netcoreapp3.1\SpotifyAPI.Web.dll
 C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\Discord_API1\bin\Debug\netcoreapp3.1\Swan.Lite.dll
 C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\Discord_API1\bin\Debug\netcoreapp3.1\Discord.Addons.Preconditions.dll
+C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\Discord_API1\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\Discord_API1\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
