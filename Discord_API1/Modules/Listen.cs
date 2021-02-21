@@ -6,6 +6,7 @@ using Discord.Addons.Preconditions;
 using Discord.Commands;
 using Discord.WebSocket;
 using Discord_API1.Service;
+using Discord_API1.Spotify;
 using Swan;
 
 
@@ -32,12 +33,11 @@ namespace Discord_API1.Modules
 
 
         [Command("listen", RunMode = RunMode.Async)]
-        [Ratelimit(1, command_cooldown, Measure.Minutes,
+        [MyRatelimit(1, command_cooldown, Measure.Minutes,
             ErrorMessage =
                 "Sheesh.. :eyes: cooldown of this command is set to 5 minutes!")] //TODO: "Command listen was executed at 15.02.2021 21:10:34." \n change log message when exited with cooldown error
         public async Task Listen_default(SocketUser user = null)
         {
-
             if (user == null)
             {
                 user = Context.User;
@@ -144,7 +144,7 @@ namespace Discord_API1.Modules
 
 
         [Command("listen", RunMode = RunMode.Async)]
-        [Ratelimit(1,5,Measure.Minutes, RatelimitFlags.None)]
+        [MyRatelimit(1,5,Measure.Minutes, RatelimitFlags.None)]
         public async Task Listen_overload1(float minutes, SocketUser user = null) //Перегруз де юзер задає скільки часу він хоче щоб його слухали
         {
             var embedBuilder = new EmbedBuilder();

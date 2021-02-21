@@ -10,8 +10,8 @@ namespace Discord_API1.Service
     {
         private readonly CommandService _commands;
         private readonly DiscordSocketClient _client;
+        private _CooldownFixer _cooldownFixer = new _CooldownFixer();
 
-        
         public Initialize(CommandService commands = null, DiscordSocketClient client = null)
         {
             _commands = commands ?? new CommandService();
@@ -21,8 +21,7 @@ namespace Discord_API1.Service
         public IServiceProvider BuildServiceProvider() => new ServiceCollection()
             .AddSingleton(_client)
             .AddSingleton(_commands)
-            
-            .AddSingleton<CommandHandler>()
+            .AddSingleton<_CooldownFixer>()
             .BuildServiceProvider();
         
             

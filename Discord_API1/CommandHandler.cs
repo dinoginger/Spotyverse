@@ -6,6 +6,9 @@ using Discord;
 using Discord.Addons.Preconditions;
 using Discord.WebSocket;
 using Discord.Commands;
+using Discord_API1.Service;
+using Microsoft.Extensions.DependencyInjection;
+using Swan;
 
 namespace Discord_API1
 {
@@ -21,7 +24,7 @@ namespace Discord_API1
             _client = client;
             _commands = commands;
             _services = services;
-            _commands.AddModulesAsync(Assembly.GetEntryAssembly(), null);
+            _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
             // Hook the execution event
             _commands.CommandExecuted += OnCommandExecutedAsync;
             // Hook the command handler
@@ -39,16 +42,17 @@ namespace Discord_API1
                 await context.Channel.SendMessageAsync(result.ErrorReason);
                 var commandName = command.IsSpecified ? command.Value.Name : "A command";
                 Console.WriteLine($"Command {commandName} was failed to execute at {DateTime.UtcNow}. Reason : {result.Error.Value.ToString()}");
+                var a = _services.GetService<_CooldownFixer>();
+
+
             }
             else
             {
                 var commandName = command.IsSpecified ? command.Value.Name : "A command";
                 Console.WriteLine($"Command {commandName} was executed at {DateTime.UtcNow}.");
-
+               
             }
 
-            // ...or even log the result (the method used should fit into
-            // your existing log handler)
             
             
         }
@@ -65,7 +69,7 @@ namespace Discord_API1
             }
             
             var context = new SocketCommandContext(_client, message);
-            await _commands.ExecuteAsync(context, argPos, null);
+            await _commands.ExecuteAsync(context, argPos, _services);
         }
     }
     

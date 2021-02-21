@@ -7,7 +7,7 @@ using Discord;
 using Discord.Addons.Preconditions;
 using Discord.Commands;
 using Discord.WebSocket;
-using Discord_API1.Service;
+using Discord_API1.Spotify;
 
 namespace Discord_API1.Modules
 {
