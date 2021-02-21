@@ -10,6 +10,7 @@
         "dependencies": {
           "Discord.Addons.Preconditions": "2.2.0-dev3",
           "Discord.Net": "2.3.0-dev-20210121.1",
+          "Microsoft.Extensions.DependencyInjection": "6.0.0-preview.1.21102.12",
           "SpotifyAPI.Web": "6.0.0",
           "Unosquare.Swan.Lite": "3.1.0"
         },
@@ -95,6 +96,25 @@
           "lib/netstandard2.1/Discord.Net.WebSocket.dll": {
             "assemblyVersion": "2.3.0.0",
             "fileVersion": "2.3.0.0"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection/6.0.0-preview.1.21102.12": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0-preview.1.21102.12"
+        },
+        "runtime": {
+          "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.10212"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0-preview.1.21102.12": {
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.10212"
           }
         }
       },
@@ -312,6 +332,20 @@
       "sha512": "sha512-p7qm/3jpeXQJ37lPjH9JFAvjlwxODxlieweRgtxmi9ZGhtq29G9IdOkjSenaa5knt4bWMX/S3TVFs+e1lkhTjg==",
       "path": "discord.net.websocket/2.3.0-dev-20210121.1",
       "hashPath": "discord.net.websocket.2.3.0-dev-20210121.1.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection/6.0.0-preview.1.21102.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0bMJG+BVwkcWR43aAO4D8L3MOrSKajbrUc0v37q7brGMGBksL3/BayJz73o+K9UNm5af1i3lwxE8EsCtDPHYCA==",
+      "path": "microsoft.extensions.dependencyinjection/6.0.0-preview.1.21102.12",
+      "hashPath": "microsoft.extensions.dependencyinjection.6.0.0-preview.1.21102.12.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0-preview.1.21102.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pw2JorWIviRqu6q/7aReLQQDYwDosWlQahjFEZPNNY49eOTmJOwh3OPBeXS+Gjp3rTcN/k96EeasWwVkJhm4yg==",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/6.0.0-preview.1.21102.12",
+      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.6.0.0-preview.1.21102.12.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/1.1.0": {
       "type": "package",
