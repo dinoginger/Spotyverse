@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Addons.Preconditions;
 using Discord.Commands;
-using Discord_API1.Service;
 using Microsoft.Extensions.DependencyInjection;
+using SpotifyBot.Service;
 
-namespace Discord_API1.Other
+namespace SpotifyBot.Other
 {
      /// <summary>
   ///     Sets how often a user is allowed to use this command

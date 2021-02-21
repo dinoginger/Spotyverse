@@ -3,9 +3,9 @@ using Discord;
 using Discord.WebSocket;
 using System.Threading.Tasks;
 using Discord.Commands;
-using Discord_API1.Service;
+using SpotifyBot.Service;
 
-namespace Discord_API1
+namespace SpotifyBot
 {
     public class Program
     {

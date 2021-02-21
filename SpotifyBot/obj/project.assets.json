@@ -1652,11 +1652,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Марко\\OneDrive\\Desktop\\Discord\\TestBotStuff\\TestBot_\\Discord_API1\\Discord_API1.csproj",
-      "projectName": "Discord_API1",
-      "projectPath": "C:\\Users\\Марко\\OneDrive\\Desktop\\Discord\\TestBotStuff\\TestBot_\\Discord_API1\\Discord_API1.csproj",
+      "projectUniqueName": "C:\\Users\\Марко\\OneDrive\\Desktop\\Discord\\TestBotStuff\\TestBot_\\SpotifyBot\\SpotifyBot.csproj",
+      "projectName": "SpotifyBot",
+      "projectPath": "C:\\Users\\Марко\\OneDrive\\Desktop\\Discord\\TestBotStuff\\TestBot_\\SpotifyBot\\SpotifyBot.csproj",
       "packagesPath": "C:\\Users\\Марко\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Марко\\OneDrive\\Desktop\\Discord\\TestBotStuff\\TestBot_\\Discord_API1\\obj\\",
+      "outputPath": "C:\\Users\\Марко\\OneDrive\\Desktop\\Discord\\TestBotStuff\\TestBot_\\SpotifyBot\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Марко\\AppData\\Roaming\\NuGet\\NuGet.Config",

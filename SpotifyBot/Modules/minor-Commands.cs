@@ -7,10 +7,10 @@ using Discord;
 using Discord.Addons.Preconditions;
 using Discord.Commands;
 using Discord.WebSocket;
-using Discord_API1.Other;
+using SpotifyBot.Other;
 
 
-namespace Discord_API1.Modules
+namespace SpotifyBot.Modules
 {
     public class Test : ModuleBase<SocketCommandContext>
     {

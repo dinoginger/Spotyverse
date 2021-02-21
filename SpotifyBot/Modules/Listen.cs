@@ -5,12 +5,12 @@ using Discord;
 using Discord.Addons.Preconditions;
 using Discord.Commands;
 using Discord.WebSocket;
-using Discord_API1.Other;
-using Discord_API1.Service;
+using SpotifyBot.Service;
+using SpotifyBot.Other;
 using Swan;
 
 
-namespace Discord_API1.Modules
+namespace SpotifyBot.Modules
 {
     //TODO: Services. telegram saved convo
      

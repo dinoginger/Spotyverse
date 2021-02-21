@@ -4,7 +4,7 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace Discord_API1.Service
+namespace SpotifyBot.Service
 {
     public class Initialize
     {

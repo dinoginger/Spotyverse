@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "tcO6apLbQELmvfnhhk56O1g0yfQPjDg2HqwNu0s8uvAXPEKkAtcjHVr/IDgkZYBJYnIKV84a1Y/LgOxjQS5Pyg==",
+  "dgSpecHash": "ZEFTnPHmLKA8CN5hT4BTcx2myNv56Om5m96OqZ3YPe0NMSbXF8+s42y+jvcdS3BFGCGZSLOdufJs8PL/LmOjVA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Марко\\OneDrive\\Desktop\\Discord\\TestBotStuff\\TestBot_\\Discord_API1\\Discord_API1.csproj",
+  "projectFilePath": "C:\\Users\\Марко\\OneDrive\\Desktop\\Discord\\TestBotStuff\\TestBot_\\SpotifyBot\\SpotifyBot.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Марко\\.nuget\\packages\\discord.addons.preconditions\\2.2.0-dev3\\discord.addons.preconditions.2.2.0-dev3.nupkg.sha512",
     "C:\\Users\\Марко\\.nuget\\packages\\discord.net\\2.3.0-dev-20210121.1\\discord.net.2.3.0-dev-20210121.1.nupkg.sha512",

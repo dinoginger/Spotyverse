@@ -6,11 +6,11 @@ using Discord;
 using Discord.Addons.Preconditions;
 using Discord.WebSocket;
 using Discord.Commands;
-using Discord_API1.Service;
 using Microsoft.Extensions.DependencyInjection;
+using SpotifyBot.Service;
 using Swan;
 
-namespace Discord_API1
+namespace SpotifyBot
 {
     public class CommandHandler
     

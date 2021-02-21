@@ -1,4 +1,4 @@
-﻿namespace Discord_API1.Service
+﻿namespace SpotifyBot.Service
 {
     /// <summary>
     /// This class will be later injected in our service.
