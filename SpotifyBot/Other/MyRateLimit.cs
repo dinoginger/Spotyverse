@@ -114,7 +114,7 @@ namespace SpotifyBot.Other
       if (commandTimeout2.TimesInvoked >= this._invokeLimit)
       {
         CooldownFix.wasSuccess = true;
-        return Task.FromResult<PreconditionResult>(PreconditionResult.FromError($"Sheesh.. :eyes: this command is on cooldown for `{(this._invokeLimitPeriod - (utcNow - commandTimeout1.FirstInvoke)).ToString(@"hh\:mm\:ss")}`"));
+        return Task.FromResult<PreconditionResult>(PreconditionResult.FromError($"Sheesh.. :eyes: this command is on cooldown for `{(this._invokeLimitPeriod - (utcNow - commandTimeout2.FirstInvoke)).ToString(@"hh\:mm\:ss")}`"));
       }
 
       this._invokeTracker[key] = commandTimeout2;

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using SpotifyAPI.Web;
 using Swan;
@@ -9,12 +11,26 @@ namespace SpotifyBot.Other
     
     public class SpotifyService
     {
-        private static string Bot_id = "ef039d13351645e98dee0db229295352";  //Id of my spotify app
-        private static string Bot_ids = "3c5a1f8875274be897f9fcc91cdcbfb7"; //secret Id 
+        private static string Bot_id;  //Id of my spotify app
+        private static string Bot_ids; //secret Id 
+
+        private static readonly string configPath = @"C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\SpotifyBot\_config.json";
+
+        private static void GetSpotifyTokens() //Method to get spotify tokens
+        {
+            StreamReader r = new StreamReader(configPath);
+            string json = r.ReadToEnd();
+            dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+            Bot_id = data.Spotify_id;
+            Bot_ids = data.Spotify_ids;
+
+        }
 
         public static async Task<Tuple<int, string>> Search_song(string songName)
         {
-            
+            //Getting tokens from our json.
+            GetSpotifyTokens();
+
             //Connection of Bot client
             var config = SpotifyClientConfig.CreateDefault();
             var request =
@@ -54,6 +70,7 @@ namespace SpotifyBot.Other
 
         }
 
+
         public static string GetTopGenres(string all_genres_string)
         {
             string topgenres = "";
@@ -78,7 +95,7 @@ namespace SpotifyBot.Other
 
             return topgenres;
             //TODO: return genre string look better, do stuff with slashes
-
+            
         }
     }
 }
