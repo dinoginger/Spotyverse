@@ -43,6 +43,7 @@ namespace Discord_API1
                 var commandName = command.IsSpecified ? command.Value.Name : "A command";
                 Console.WriteLine($"Command {commandName} was failed to execute at {DateTime.UtcNow}. Reason : {result.Error.Value.ToString()}");
                 var a = _services.GetService<_CooldownFixer>();
+                a.wasSuccess = false;
 
 
             }

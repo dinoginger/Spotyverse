@@ -7,15 +7,7 @@
     /// </summary>
     public class _CooldownFixer
     {
-        public int use_times;
-        public _CooldownFixer()
-        {
-            use_times = 5;
-        }
+        public bool wasSuccess;
 
-        public void aaa()
-        {
-            var a = 3;
-        }
     }
 }
