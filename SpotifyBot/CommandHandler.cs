@@ -42,6 +42,8 @@ namespace SpotifyBot
                 await context.Channel.SendMessageAsync(result.ErrorReason);
                 var commandName = command.IsSpecified ? command.Value.Name : "A command";
                 Console.WriteLine($"Command {commandName} was failed to execute at {DateTime.UtcNow}. Reason : {result.Error.Value.ToString()}");
+                
+                //This is run for cooldown issue.
                 var a = _services.GetService<_CooldownFixer>();
                 a.wasSuccess = false;
 
