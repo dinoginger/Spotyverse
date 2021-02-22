@@ -38,10 +38,10 @@ namespace SpotifyBot.Modules
         [Command("listen", RunMode = RunMode.Async)]
         [MyRatelimit(1,5,Measure.Minutes, RatelimitFlags.None,
             ErrorMessage = "Sheesh.. :eyes: cooldown of this command is set to 5 minutes!")]
-        public async Task Listen_overload1(float minutes, SocketUser user = null) //Перегруз де юзер задає скільки часу він хоче щоб його слухали
+        public async Task Listenn(float minutes) //Перегруз де юзер задає скільки часу він хоче щоб його слухали
         {
             var embedBuilder = new EmbedBuilder();
-
+            SocketUser user = null;
             if (minutes <= 0.5f)
             {
                 await Context.Channel.SendMessageAsync("Time period must be more than 0,5 min.");
@@ -133,5 +133,102 @@ namespace SpotifyBot.Modules
             }
 
         }
+        
+        [Command("listen", RunMode = RunMode.Async)]
+        [MyRatelimit(1,5,Measure.Minutes, RatelimitFlags.None,
+            ErrorMessage = "Sheesh.. :eyes: cooldown of this command is set to 5 minutes!")]
+        public async Task Listenn(float minutes, SocketUser user) //Перегруз де юзер задає скільки часу він хоче щоб його слухали
+        {
+            var embedBuilder = new EmbedBuilder();
+            user = Context.User;
+            if (minutes <= 0.5f)
+            {
+                await Context.Channel.SendMessageAsync("Time period must be more than 0,5 min.");
+                return;
+            }
+
+            int p = (int)(minutes*60)/wait_seconds; //How many times cycle will run
+            song_data[] songData = new song_data[p];
+            int d = 0;
+            string[] artist = new string[p];
+            string[] title = new string[p];
+
+            await Context.Channel.SendMessageAsync("starting...");
+            for (int i = 0; i < p; i++)
+            {
+                var activities = user.Activities;
+                foreach (var activity in activities) //тайпчек всіх активностей на спотіфай
+                {
+                    if (activity is SpotifyGame spot)
+                    {
+                        try
+                        {
+                            Console.WriteLine($"{d + 1} song recieved");
+                            var tuple = SpotifyService.Search_song(spot.TrackTitle + " " + spot.Artists.First());
+                            songData[d].popularity = tuple.Result.Item1;
+                            songData[d].genre_string = tuple.Result.Item2;
+                            
+                            songData[d].songname = spot.TrackTitle;
+                            Console.WriteLine(spot.TrackTitle);
+                            Console.WriteLine(songData[d].genre_string);
+                            d++;
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.InnerException.Message);
+                        }
+                    }
+                }
+
+                if (i != p - 1) //Для того, щоб після останньої пісні вже не робив ділей
+                {
+                    await Task.Delay(wait_seconds*1000);
+                }
+            }
+            
+            
+            Console.WriteLine("\n\n");
+            var distinct_data = songData.Distinct();
+            int[] popularities = new int[distinct_data.Count()];
+            int dd = 0;
+            string distinct_genres = "";
+            foreach (var data in distinct_data)
+            {
+                Console.WriteLine(data.songname);
+                Console.WriteLine(data.genre_string);
+                popularities[dd] = data.popularity;
+                dd++;
+                distinct_genres = distinct_genres + "+" +  data.genre_string;
+            }
+            
+            Console.WriteLine($"\n\n{distinct_genres}");
+            var topGenres = SpotifyService.GetTopGenres(distinct_genres);
+            try
+            {
+                embedBuilder.WithAuthor($"for {user.Username}")
+                    .WithTitle($"How basic your music taste is, based on {popularities.Length} songs :")
+                    .AddField("============", $"Your playlist is {Math.Round(popularities.Average(), 1)}% basic.", false)
+                    .WithCurrentTimestamp()
+                    .WithColor(Color.Purple);
+                if (topGenres.Length > 2)
+                {
+                    embedBuilder.AddField("============", $"Top genres are : {topGenres}", false);
+                }
+                else
+                {
+                    embedBuilder.AddField("============", "^_^", false);
+                }
+                await Context.Channel.SendMessageAsync("", false, embedBuilder.Build()); 
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                
+                
+            }
+
+        }
     }
 }
+     
+     
