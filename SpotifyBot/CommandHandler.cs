@@ -40,13 +40,13 @@ namespace SpotifyBot
             // We can tell the user what went wrong 
             if (!string.IsNullOrEmpty(result?.ErrorReason)) //TODO: попроацювати над ерор хендлером більше, після пулу TimeOut бранчу допрацювати і з ним теж
             {
-                switch (command.Value.Name)
+                if (command.Value.Name == "listen")
                 {
-                    case "listen":
-                        await ErrorResponse.ListenErrorResponder(context, result);
-                        break;
-                    default:
-                        break;
+                    ErrorResponse.ListenErrorResponder(context, result);
+                }
+                else
+                {
+                    await context.Channel.SendMessageAsync(result.ErrorReason);
                 }
 
                 var commandName = command.IsSpecified ? command.Value.Name : "A command";

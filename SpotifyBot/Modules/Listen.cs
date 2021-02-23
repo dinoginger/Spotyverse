@@ -33,10 +33,9 @@ namespace SpotifyBot.Modules
 
 
         [Command("listen", RunMode = RunMode.Async)]
-        [Priority(0)]
-        [MyRatelimit(1,5,Measure.Minutes, RatelimitFlags.None,
-            ErrorMessage = "Sheesh.. :eyes: cooldown of this command is set to 5 minutes!")]
-        public async Task Listenn(float minutes) //Перегруз де юзер задає скільки часу він хоче щоб його слухали
+        [Ratelimit(1,5,Measure.Minutes, RatelimitFlags.None)] //My cooldown attr
+        [Priority(1)] //less prioritized
+        public async Task Listenn(float minutes)
         {
             var embedBuilder = new EmbedBuilder();
             SocketUser user = null;
@@ -60,7 +59,7 @@ namespace SpotifyBot.Modules
             for (int i = 0; i < p; i++)
             {
                 var activities = user.Activities;
-                foreach (var activity in activities) //тайпчек всіх активностей на спотіфай
+                foreach (var activity in activities) //Typecheckkk
                 {
                     if (activity is SpotifyGame spot)
                     {
@@ -83,14 +82,15 @@ namespace SpotifyBot.Modules
                     }
                 }
 
-                if (i != p - 1) //Для того, щоб після останньої пісні вже не робив ділей
+                if (i != p - 1) //For not delaying after last time
                 {
                     await Task.Delay(wait_seconds*1000);
                 }
             }
             
             
-            Console.WriteLine("\n\n");
+            //Console.WriteLine("\n\n");
+            
             var distinct_data = songData.Distinct();
             int[] popularities = new int[distinct_data.Count()];
             int dd = 0;
@@ -103,8 +103,9 @@ namespace SpotifyBot.Modules
                 dd++;
                 distinct_genres = distinct_genres + "+" +  data.genre_string;
             }
+
+            //Console.WriteLine($"\n\n{distinct_genres}");
             
-            Console.WriteLine($"\n\n{distinct_genres}");
             var topGenres = SpotifyService.GetTopGenres(distinct_genres);
             try
             {
@@ -117,7 +118,7 @@ namespace SpotifyBot.Modules
                 {
                     embedBuilder.AddField("============", $"Top genres are : {topGenres}", false);
                 }
-                else
+                else //Funne face when no topgenres
                 {
                     embedBuilder.AddField("============", "^_^", false);
                 }
@@ -131,14 +132,18 @@ namespace SpotifyBot.Modules
             }
 
         }
-        
+        /// <summary>
+        /// This overload is for custom user
+        /// </summary>
+        /// <param name="minutes"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [Command("listen", RunMode = RunMode.Async)]
-        [Priority(0)]
-        [MyRatelimit(1,5,Measure.Minutes, RatelimitFlags.None,
-            ErrorMessage = "Sheesh.. :eyes: cooldown of this command is set to 5 minutes!")]
+        [MyRatelimit(1,5,Measure.Minutes, RatelimitFlags.None)] //default cooldown attr, or else it wont work
+        [Priority(2)] //prioritized
         public async Task Listenn(float minutes, SocketUser user) //Перегруз де юзер задає скільки часу він хоче щоб його слухали
         {
-            Console.Write(user.Username); 
+            Console.Write("SECOND OVERLOAD WITH CUSTOM USER" + user.Username); 
             var embedBuilder = new EmbedBuilder();
             if (minutes <= 0.5f)
             {
@@ -156,7 +161,7 @@ namespace SpotifyBot.Modules
             for (int i = 0; i < p; i++)
             {
                 var activities = user.Activities;
-                foreach (var activity in activities) //тайпчек всіх активностей на спотіфай
+                foreach (var activity in activities) //Typecheck....
                 {
                     if (activity is SpotifyGame spot)
                     {
@@ -179,14 +184,15 @@ namespace SpotifyBot.Modules
                     }
                 }
 
-                if (i != p - 1) //Для того, щоб після останньої пісні вже не робив ділей
+                if (i != p - 1) //For not delaying after last time
                 {
                     await Task.Delay(wait_seconds*1000);
                 }
             }
             
             
-            Console.WriteLine("\n\n");
+            //Console.WriteLine("\n\n");
+            
             var distinct_data = songData.Distinct();
             int[] popularities = new int[distinct_data.Count()];
             int dd = 0;
@@ -200,7 +206,8 @@ namespace SpotifyBot.Modules
                 distinct_genres = distinct_genres + "+" +  data.genre_string;
             }
             
-            Console.WriteLine($"\n\n{distinct_genres}");
+            //Console.WriteLine($"\n\n{distinct_genres}"); - in case you wanna see it
+            
             var topGenres = SpotifyService.GetTopGenres(distinct_genres);
             try
             {
@@ -213,7 +220,7 @@ namespace SpotifyBot.Modules
                 {
                     embedBuilder.AddField("============", $"Top genres are : {topGenres}", false);
                 }
-                else
+                else //Do funne face when no topgenres
                 {
                     embedBuilder.AddField("============", "^_^", false);
                 }
@@ -222,10 +229,7 @@ namespace SpotifyBot.Modules
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                
-                
             }
-
         }
     }
 }
