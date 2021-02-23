@@ -7,6 +7,7 @@ using Discord.Addons.Preconditions;
 using Discord.WebSocket;
 using Discord.Commands;
 using Microsoft.Extensions.DependencyInjection;
+using SpotifyBot.Other;
 using SpotifyBot.Service;
 using Swan;
 
@@ -39,7 +40,15 @@ namespace SpotifyBot
             // We can tell the user what went wrong 
             if (!string.IsNullOrEmpty(result?.ErrorReason)) //TODO: попроацювати над ерор хендлером більше, після пулу TimeOut бранчу допрацювати і з ним теж
             {
-                await context.Channel.SendMessageAsync(result.ErrorReason);
+                switch (command.Value.Name)
+                {
+                    case "listen":
+                        await ErrorResponse.ListenErrorResponder(context, result);
+                        break;
+                    default:
+                        break;
+                }
+
                 var commandName = command.IsSpecified ? command.Value.Name : "A command";
                 Console.WriteLine($"Command {commandName} was failed to execute at {DateTime.UtcNow}. Reason : {result.Error.Value.ToString()}");
                 

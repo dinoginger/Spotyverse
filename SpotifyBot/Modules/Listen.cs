@@ -24,10 +24,7 @@ namespace SpotifyBot.Modules
         } 
         
         ///Default value of minutes command !listen runs, if not overloaded with minutes parameter
-        private const int default_time = 5; //--minutes.
-
         private const int command_cooldown = 5;//--minutes \\\\Determines cooldown for our listen command;
-        private const string command_cooldownSTR = "5";//for errormessage, duplicate 
         
         private const int wait_seconds = 30; //--seconds \\\\\Period of time we wait before checking song again
 
@@ -36,6 +33,7 @@ namespace SpotifyBot.Modules
 
 
         [Command("listen", RunMode = RunMode.Async)]
+        [Priority(0)]
         [MyRatelimit(1,5,Measure.Minutes, RatelimitFlags.None,
             ErrorMessage = "Sheesh.. :eyes: cooldown of this command is set to 5 minutes!")]
         public async Task Listenn(float minutes) //Перегруз де юзер задає скільки часу він хоче щоб його слухали
@@ -135,19 +133,20 @@ namespace SpotifyBot.Modules
         }
         
         [Command("listen", RunMode = RunMode.Async)]
+        [Priority(0)]
         [MyRatelimit(1,5,Measure.Minutes, RatelimitFlags.None,
             ErrorMessage = "Sheesh.. :eyes: cooldown of this command is set to 5 minutes!")]
         public async Task Listenn(float minutes, SocketUser user) //Перегруз де юзер задає скільки часу він хоче щоб його слухали
         {
+            Console.Write(user.Username); 
             var embedBuilder = new EmbedBuilder();
-            user = Context.User;
             if (minutes <= 0.5f)
             {
                 await Context.Channel.SendMessageAsync("Time period must be more than 0,5 min.");
                 return;
             }
 
-            int p = (int)(minutes*60)/wait_seconds; //How many times cycle will run
+            int p = (int)(minutes*60)/wait_seconds; //How many times loop will run
             song_data[] songData = new song_data[p];
             int d = 0;
             string[] artist = new string[p];
