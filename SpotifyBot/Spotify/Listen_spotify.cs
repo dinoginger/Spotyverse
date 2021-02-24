@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using SpotifyAPI.Web;
 using Swan;
 
-namespace SpotifyBot.Other
+namespace SpotifyBot.Spotify
 {
     
-    public class SpotifyService
+    public partial class SpotifyService
     {
         private static string Bot_id;  //Id of my spotify app
         private static string Bot_ids; //secret Id 
@@ -25,8 +25,14 @@ namespace SpotifyBot.Other
             Bot_ids = data.Spotify_ids;
 
         }
-
-        public static async Task<Tuple<int, string>> Search_song(string songName)
+/// <summary>
+/// This method is created for command !listen.
+/// Returns string with genres of songs artist and popularity score.
+/// </summary>
+/// <param name="songName"></param>
+/// <returns></returns>
+/// <exception cref="ArgumentException"></exception>
+        public static async Task<Tuple<int, string>> ListenSearch(string songName)
         {
             //Getting tokens from our json.
             GetSpotifyTokens();
@@ -70,9 +76,18 @@ namespace SpotifyBot.Other
 
         }
 
-
+/// <summary>
+/// This method created for listen command.
+/// </summary>
+/// <param name="all_genres_string"></param>
+/// <returns></returns>
         public static string GetTopGenres(string all_genres_string)
         {
+            if (all_genres_string == null)
+            {
+                throw new ArgumentNullException("genre_string is null. At GetTopGenres method.");
+            }
+            
             string topgenres = "";
             var genre_list = all_genres_string
                 .Split(new[] { '+' }, StringSplitOptions.RemoveEmptyEntries)

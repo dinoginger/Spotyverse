@@ -5,7 +5,7 @@ using Discord;
 using Discord.Addons.Preconditions;
 using Discord.Commands;
 using Discord.WebSocket;
-using SpotifyBot.Service;
+using SpotifyBot.Spotify;
 using SpotifyBot.Other;
 using Swan;
 
@@ -38,7 +38,7 @@ namespace SpotifyBot.Modules
         public async Task Listenn(float minutes)
         {
             var embedBuilder = new EmbedBuilder();
-            SocketUser user = null;
+            SocketUser user = Context.User;
             if (minutes <= 0.5f)
             {
                 await Context.Channel.SendMessageAsync("Time period must be more than 0,5 min.");
@@ -50,10 +50,7 @@ namespace SpotifyBot.Modules
             int d = 0;
             string[] artist = new string[p];
             string[] title = new string[p];
-            if (user == null)
-            {
-                user = Context.User;
-            }
+            
 
             await Context.Channel.SendMessageAsync("starting...");
             for (int i = 0; i < p; i++)
@@ -66,7 +63,7 @@ namespace SpotifyBot.Modules
                         try
                         {
                             Console.WriteLine($"{d + 1} song recieved");
-                            var tuple = SpotifyService.Search_song(spot.TrackTitle + " " + spot.Artists.First());
+                            var tuple = SpotifyService.ListenSearch(spot.TrackTitle + " " + spot.Artists.First());
                             songData[d].popularity = tuple.Result.Item1;
                             songData[d].genre_string = tuple.Result.Item2;
                             
@@ -168,7 +165,7 @@ namespace SpotifyBot.Modules
                         try
                         {
                             Console.WriteLine($"{d + 1} song recieved");
-                            var tuple = SpotifyService.Search_song(spot.TrackTitle + " " + spot.Artists.First());
+                            var tuple = SpotifyService.ListenSearch(spot.TrackTitle + " " + spot.Artists.First());
                             songData[d].popularity = tuple.Result.Item1;
                             songData[d].genre_string = tuple.Result.Item2;
                             

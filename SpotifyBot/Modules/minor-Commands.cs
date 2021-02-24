@@ -55,9 +55,9 @@ namespace SpotifyBot.Modules
                 Console.WriteLine("we in!");
                 try
                 {
-                    var tuple = SpotifyService.Search_song(msg);
-                    await Context.Channel.SendMessageAsync($"Spotify link to song is ({tuple.Result.Item2})");
-                    await Context.Channel.SendMessageAsync($"Spotify song popularity is {tuple.Result.Item1}");
+                    //var tuple = SpotifyService.Search_song(msg);
+                    //await Context.Channel.SendMessageAsync($"Spotify link to song is ({tuple.Result.Item2})");
+                    //await Context.Channel.SendMessageAsync($"Spotify song popularity is {tuple.Result.Item1}");
                 }
                 catch (Exception e)
                 {
