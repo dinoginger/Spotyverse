@@ -8,6 +8,7 @@ using Discord.Addons.Preconditions;
 using Discord.Commands;
 using Discord.WebSocket;
 using SpotifyBot.Other;
+using SpotifyBot.Spotify;
 
 
 namespace SpotifyBot.Modules
@@ -55,9 +56,8 @@ namespace SpotifyBot.Modules
                 Console.WriteLine("we in!");
                 try
                 {
-                    //var tuple = SpotifyService.Search_song(msg);
-                    //await Context.Channel.SendMessageAsync($"Spotify link to song is ({tuple.Result.Item2})");
-                    //await Context.Channel.SendMessageAsync($"Spotify song popularity is {tuple.Result.Item1}");
+                    EmbedBuilder embedBuilerr = await SpotifyService.Search(msg);
+                    await Context.Channel.SendMessageAsync("", false, embedBuilerr.Build());
                 }
                 catch (Exception e)
                 {
