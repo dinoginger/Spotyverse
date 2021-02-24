@@ -63,7 +63,7 @@ namespace SpotifyBot.Modules
                         try
                         {
                             Console.WriteLine($"{d + 1} song recieved");
-                            var tuple = SpotifyService.ListenSearch(spot.TrackTitle + " " + spot.Artists.First());
+                            var tuple = SpotifyService.Listen(spot.TrackTitle + " " + spot.Artists.First());
                             songData[d].popularity = tuple.Result.Item1;
                             songData[d].genre_string = tuple.Result.Item2;
                             
@@ -165,7 +165,7 @@ namespace SpotifyBot.Modules
                         try
                         {
                             Console.WriteLine($"{d + 1} song recieved");
-                            var tuple = SpotifyService.ListenSearch(spot.TrackTitle + " " + spot.Artists.First());
+                            var tuple = SpotifyService.Listen(spot.TrackTitle + " " + spot.Artists.First());
                             songData[d].popularity = tuple.Result.Item1;
                             songData[d].genre_string = tuple.Result.Item2;
                             

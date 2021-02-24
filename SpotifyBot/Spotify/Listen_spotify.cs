@@ -32,7 +32,7 @@ namespace SpotifyBot.Spotify
 /// <param name="songName"></param>
 /// <returns></returns>
 /// <exception cref="ArgumentException"></exception>
-        public static async Task<Tuple<int, string>> ListenSearch(string songName)
+        public static async Task<Tuple<int, string>> Listen(string songName)
         {
             //Getting tokens from our json.
             GetSpotifyTokens();
