@@ -17,7 +17,7 @@ namespace SpotifyBot.Spotify
             string artistname;
             string genres_string = "";
             EmbedBuilder embedBuilder = new EmbedBuilder();
-            
+
             //Getting tokens from our json.
             GetSpotifyTokens();
 
@@ -30,43 +30,24 @@ namespace SpotifyBot.Spotify
             // --- 
             try
             {
-                var result =
-                    await spotify.Search.Item(new SearchRequest(SearchRequest.Types.All,
-                        songName)); //Sending search request and creating json
+                var result = await spotify.Search.Item(new SearchRequest(SearchRequest.Types.All,
+                        songName)); //Sending search request and obtaining data obj
+                EmbedBuilder embed = EmbedCreator(result, spotify);
+                return embed;
 
-                string data_json = result.Tracks.ToJson();
-
-                dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(data_json);
-                //String : song name;
-                song_name = data.Items[0].Name.ToString();
-
-                //String : album name;
-                album_name = data.Items[0].Album.Name.ToString();
-
-                //Int : song popularity;
-                popuarity = (int) data.Items[0].Popularity;
-
-                
-                //GenreSearch
-                string artistid = data.Items[0].Album.Artists[0].Id.ToString();
-                var artist = await spotify.Artists.Get(artistid); 
-                //String : Artist name;
-                artistname = data.Items[0].Artists[0].Name.ToString(); 
-                
-                //String : Genres;
-                foreach (var genre in artist.Genres.ToArray())
-                {
-                    
-                    genres_string = genres_string + ", " + genre;
-                }
             }
-            catch
+            catch(Exception e)
             {
-                throw new ArgumentException($"Song \"{songName}\" was not found.");
+                throw new ArgumentException($"Song \"{songName}\" was not found. {e}");
+                throw;
             }
 
+
+
+            /*
             try
             {
+            
                 //Building embed; 
                 embedBuilder.WithTitle("Search results :");
                 
@@ -93,11 +74,92 @@ namespace SpotifyBot.Spotify
             catch (Exception e)
             {
                 Console.WriteLine("search_spotify method crashed. ");
+                throw;
             }
             
             return embedBuilder;
 
+            */
+            return null;
 
         }
+
+        
+        /// <summary>
+        /// This is created to give to user already filtred search response.
+        /// </summary>
+        /// <param name="response"></param>
+        private static EmbedBuilder EmbedCreator(SearchResponse response, SpotifyClient spotify)
+        {
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            //So order of data checking is 
+            //Artist - or Album - or Track;
+            
+            
+            //===============checking if artist
+            var artists = response.Artists.Items;
+            foreach (var artist in artists)
+            {
+                if (artist.Followers.Total > 1000)
+                {
+                    try
+                    {
+            
+                        //Building embed; 
+                        embedBuilder.WithTitle("Search results :");
+                
+                        //artist field
+                        var Artist_field = new EmbedFieldBuilder();
+                        Artist_field.WithName("Artist : ");
+                        Artist_field.WithValue($"Name: [{artist.Name}]({artist.ExternalUrls["spotify"]}) \n");
+                        Artist_field.IsInline = false;
+                        //if there are genres in array, add em.
+                        if (artist.Genres.ToArray().Length != 0)
+                        {
+                            string genres_string = "";
+                            foreach (var genre in artist.Genres.ToArray())
+                            {
+                                genres_string = genres_string + "," + genre;
+                            }
+                            Artist_field.Value += $"Main genres : {genres_string}";
+                        }
+
+                        embedBuilder.AddField(Artist_field);
+                        
+                        //Here adding url of image.
+                        embedBuilder.ImageUrl = artist.Images[0].Url ?? null;
+                        
+                        
+                        //Getting top tracks of artist
+                        var result = spotify.Artists.GetTopTracks(artist.Id, new ArtistsTopTracksRequest("US"));
+                        
+                        string toptracks = "";
+                        int i = 1;
+                        foreach (var track in result.Result.Tracks.ToArray())
+                        {
+                            toptracks += $"\n{i}. [{track.Name}]({track.ExternalUrls["spotify"]})";
+                            i++;
+                        }
+                        embedBuilder.AddField("Top Tracks :", toptracks );
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("search_spotify method crashed.");
+                        throw;
+                    }
+            
+                    return embedBuilder;
+
+                }
+            }
+
+            return null;
+        }
+        
+
+
     }
+    
 }
+
