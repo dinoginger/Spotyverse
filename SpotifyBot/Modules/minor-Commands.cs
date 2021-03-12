@@ -62,8 +62,7 @@ namespace SpotifyBot.Modules
                 catch (Exception e)
                 {
                     Console.WriteLine("we messed up");
-                    await Context.Channel.SendMessageAsync($"{e.Message}");
-                    //throw;
+                    throw;
                 }
                 
 

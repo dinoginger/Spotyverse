@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using SpotifyAPI.Web;
@@ -8,7 +10,7 @@ namespace SpotifyBot.Spotify
 {
     public partial class SpotifyService
     {
-        public static async Task<EmbedBuilder> Search(string songName)
+        public static async Task<EmbedBuilder> Search(string requestString)
         {
             string song_name;
             string album_name;
@@ -30,136 +32,168 @@ namespace SpotifyBot.Spotify
             // --- 
             try
             {
-                var result = await spotify.Search.Item(new SearchRequest(SearchRequest.Types.All,
-                        songName)); //Sending search request and obtaining data obj
+                SearchRequest searchRequest = new SearchRequest(SearchRequest.Types.All,
+                    requestString);
+                searchRequest.Limit = 5;
+                var result = await spotify.Search.Item(searchRequest); //Sending search request and obtaining data obj
                 EmbedBuilder embed = EmbedCreator(result, spotify);
-                return embed;
-
-            }
-            catch(Exception e)
-            {
-                throw new ArgumentException($"Song \"{songName}\" was not found. {e}");
-                throw;
-            }
-
-
-
-            /*
-            try
-            {
-            
-                //Building embed; 
-                embedBuilder.WithTitle("Search results :");
-                
-                //song field
-                var Song_field = new EmbedFieldBuilder();
-                Song_field.WithName("Song : ");
-                Song_field.WithValue($"Name : {song_name ?? throw new Exception("")} \n");
-                Song_field.Value += $"Album: {album_name ?? throw new Exception("")} \n";
-                Song_field.Value += $"Popularity : {popuarity}";
-                Song_field.IsInline = false;
-                embedBuilder.AddField(Song_field);
-
-                //artist field
-                var Artist_field = new EmbedFieldBuilder();
-                Artist_field.WithName("Artist : ");
-                Artist_field.WithValue($"Name: {artistname ?? throw new Exception("")} \n");
-                Artist_field.IsInline = false;
-                if (!string.IsNullOrEmpty(genres_string))
+                if (embed == null)
                 {
-                    Artist_field.Value += $"Main genres : {genres_string}";
+                    throw new ArgumentException("");
                 }
-                embedBuilder.AddField(Artist_field);
+                return embed;
+                
+
             }
             catch (Exception e)
             {
-                Console.WriteLine("search_spotify method crashed. ");
-                throw;
+                throw new ArgumentException($"No matches found for \"{requestString}\".");
             }
-            
-            return embedBuilder;
-
-            */
-            return null;
-
         }
 
-        
+
         /// <summary>
         /// This is created to give to user already filtred search response.
         /// </summary>
         /// <param name="response"></param>
         private static EmbedBuilder EmbedCreator(SearchResponse response, SpotifyClient spotify)
         {
-            EmbedBuilder embedBuilder = new EmbedBuilder();
-            //So order of data checking is 
-            //Artist - or Album - or Track;
-            
-            
-            //===============checking if artist
-            var artists = response.Artists.Items;
-            foreach (var artist in artists)
+            try
             {
-                if (artist.Followers.Total > 1000)
+                EmbedBuilder embedBuilder = new EmbedBuilder();
+                //So order of data checking is 
+                //Artist - or Album - or Track;
+
+
+                //===============checking if artist
+
+
+                var artists = response.Artists.Items;
+                if (artists.Count > 0)
                 {
-                    try
+                    foreach (var artist in artists)
                     {
-            
+                        if (artist.Followers.Total > 1000)
+                        {
+
+                            //Building embed; 
+                            embedBuilder.WithTitle("Search results :");
+
+                            //artist field
+                            var Artist_field = new EmbedFieldBuilder();
+                            Artist_field.WithName("Artist : ");
+                            Artist_field.WithValue($"Name: [{artist.Name}]({artist.ExternalUrls["spotify"]}) \n");
+                            Artist_field.IsInline = false;
+                            //if there are genres in array, add em.
+                            if (artist.Genres.ToArray().Length != 0)
+                            {
+                                string genres_string = "";
+                                foreach (var genre in artist.Genres.ToArray())
+                                {
+                                    genres_string = genres_string + "," + genre;
+                                }
+
+                                Artist_field.Value += $"Main genres : {genres_string}";
+                            }
+
+                            embedBuilder.AddField(Artist_field);
+
+                            //Here adding url of image.
+                            embedBuilder.ImageUrl = artist.Images[0].Url;
+
+
+                            //Getting top tracks of artist
+                            var result = spotify.Artists.GetTopTracks(artist.Id, new ArtistsTopTracksRequest("US"));
+
+                            string toptracks = "";
+                            int i = 1;
+                            foreach (var track in result.Result.Tracks.ToArray())
+                            {
+                                toptracks += $"\n{i}. [{track.Name}]({track.ExternalUrls["spotify"]})";
+                                i++;
+                            }
+
+                            embedBuilder.AddField("Top Tracks :", toptracks);
+
+                            
+                            return embedBuilder;
+
+                        }
+                    }
+                }
+
+                ///If its not an artist we check whether album by this request exists.
+
+                if (response.Albums.Items.Count > 0 )
+                {
+                    var album = response.Albums.Items[0];
+                    if (album.AlbumType != "single")
+                    {
                         //Building embed; 
                         embedBuilder.WithTitle("Search results :");
-                
-                        //artist field
-                        var Artist_field = new EmbedFieldBuilder();
-                        Artist_field.WithName("Artist : ");
-                        Artist_field.WithValue($"Name: [{artist.Name}]({artist.ExternalUrls["spotify"]}) \n");
-                        Artist_field.IsInline = false;
-                        //if there are genres in array, add em.
-                        if (artist.Genres.ToArray().Length != 0)
-                        {
-                            string genres_string = "";
-                            foreach (var genre in artist.Genres.ToArray())
-                            {
-                                genres_string = genres_string + "," + genre;
-                            }
-                            Artist_field.Value += $"Main genres : {genres_string}";
-                        }
 
-                        embedBuilder.AddField(Artist_field);
-                        
+                        //album field
+                        var Album_field = new EmbedFieldBuilder();
+                        Album_field.WithName("Album : ");
+                        Album_field.WithValue(
+                            $"Name: [{album.Name}]({album.ExternalUrls["spotify"]}) \nArtist : [{album.Artists[0].Name}]({album.Artists[0].ExternalUrls["spotify"]})" +
+                            $"\nAlbum type : **{album.AlbumType}**\nAlbum release date : **{album.ReleaseDate}**");
+                        Album_field.IsInline = false;
+
                         //Here adding url of image.
-                        embedBuilder.ImageUrl = artist.Images[0].Url ?? null;
-                        
-                        
-                        //Getting top tracks of artist
-                        var result = spotify.Artists.GetTopTracks(artist.Id, new ArtistsTopTracksRequest("US"));
-                        
-                        string toptracks = "";
-                        int i = 1;
-                        foreach (var track in result.Result.Tracks.ToArray())
-                        {
-                            toptracks += $"\n{i}. [{track.Name}]({track.ExternalUrls["spotify"]})";
-                            i++;
-                        }
-                        embedBuilder.AddField("Top Tracks :", toptracks );
+                        embedBuilder.ImageUrl = album.Images[0].Url;
 
+                        embedBuilder.AddField(Album_field);
+
+
+                        return embedBuilder;
                     }
-                    catch (Exception e)
+                }
+                //..Our last hope - track with that name exists.
+
+                if (response.Tracks.Items.Count > 0)
+                {
+                    var track = response.Tracks.Items[0];
+                    
+                    embedBuilder.WithTitle("Search results :");
+                    
+                    
+                    //album field
+                    var track_field  = new EmbedFieldBuilder();
+                    string track_album_name = ""; //Created bc we want to add prefix [single] if album is a single.
+                    if (track.Album.AlbumType == "single")
                     {
-                        Console.WriteLine("search_spotify method crashed.");
-                        throw;
+                        track_album_name += "[single] ";
                     }
-            
+
+                    track_album_name += track.Album.Name;
+                    
+                    //
+                    track_field.WithName("Track : ");
+                    track_field.WithValue(
+                        $"Name: [{track.Name}]({track.ExternalUrls["spotify"]}) " +
+                        $"\nAlbum : [{track_album_name}]({track.Album.ExternalUrls["spotify"]})" +
+                        $"\nAlbum release date : **{track.Album.ReleaseDate}**" + $"\nArtist : [{track.Artists[0].Name}]({track.Artists[0].ExternalUrls["spotify"]})");
+                    track_field.IsInline = false;
+
+                    //Here adding url of image.
+                    embedBuilder.ImageUrl = track.Album.Images[0].Url;
+                    embedBuilder.AddField(track_field);
                     return embedBuilder;
 
                 }
+
+                return null;
+                
+                
             }
-
-            return null;
+            catch (Exception e)
+            {
+                Console.WriteLine("search_spotify method crashed.");
+                throw;
+            }
         }
-        
-
-
     }
-    
 }
+        
 
