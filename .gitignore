@@ -1,0 +1,12 @@
+
+
+#compiler output and build options
+obj/
+bin/
+
+#Project settings
+.idea/
+
+
+#config file
+/bot/_config.json

@@ -16,7 +16,7 @@ namespace SpotifyBot
             => new Program().StartAsync().GetAwaiter().GetResult();
 
 
-        private readonly string configPath = @"C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\SpotifyBot\_config.json";
+        private readonly string configPath = @"C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\bot\_config.json";
         private string bot_token;
         
         private DiscordSocketClient _client;
