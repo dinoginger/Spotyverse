@@ -28,7 +28,7 @@ namespace SpotifyBot
             _client = new DiscordSocketClient();
             bot_token = GetToken();
             await _client.LoginAsync(TokenType.Bot, bot_token);
-
+            await _client.SetGameAsync("your music | !help", null,ActivityType.Listening);
             await _client.StartAsync(); //?????
             var Service_init  = new Initialize(_client);
             var service_provider = Service_init.BuildServiceProvider();
