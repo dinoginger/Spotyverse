@@ -18,7 +18,9 @@ namespace SpotifyBot.Modules
         [Command("invite")]
         public async Task UserInfo()
         {
-            await ReplyAsync($"Here is my link invite : {Program.invite_link}");
+            Discord.IDMChannel gencom = await Context.Message.Author.GetOrCreateDMChannelAsync();
+            await gencom.SendMessageAsync($"Here is my link invite : \n{Program.invite_link}", false);
+            await gencom.CloseAsync(); 
         }
 
         [Command("help")]
