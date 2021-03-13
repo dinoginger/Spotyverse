@@ -12,9 +12,7 @@ using Swan;
 
 namespace SpotifyBot.Modules
 {
-    //TODO: Services. telegram saved convo
-     
-     public class Listen : ModuleBase<SocketCommandContext>
+    public class Listen : ModuleBase<SocketCommandContext>
     {
         private struct song_data
         {
@@ -35,7 +33,7 @@ namespace SpotifyBot.Modules
         [Command("listen", RunMode = RunMode.Async)]
         //Here goes default ratelimit, in prioritized is my own.
         //Idk why but it wont work good otherwise ¯\_(ツ)_/¯
-        [Ratelimit(1,5,Measure.Minutes, RatelimitFlags.None)]
+        [Ratelimit(1,command_cooldown,Measure.Minutes, RatelimitFlags.None)]
         [Priority(1)] //less prioritized
         public async Task Listenn(float minutes)
         {
@@ -50,10 +48,6 @@ namespace SpotifyBot.Modules
             int p = (int)(minutes*60)/wait_seconds; //How many times cycle will run
             song_data[] songData = new song_data[p];
             int d = 0;
-            string[] artist = new string[p];
-            string[] title = new string[p];
-            
-
             await Context.Channel.SendMessageAsync("starting...");
             for (int i = 0; i < p; i++)
             {
@@ -108,11 +102,12 @@ namespace SpotifyBot.Modules
             var topGenres = SpotifyService.GetTopGenres(distinct_genres);
             try
             {
+                Random random = new Random();
                 embedBuilder.WithAuthor($"for {user.Username}")
                     .WithTitle($"How basic your music taste is, based on {popularities.Length} songs :")
                     .AddField("============", $"Your playlist is {Math.Round(popularities.Average(), 1)}% basic.", false)
                     .WithCurrentTimestamp()
-                    .WithColor(Color.Purple);
+                    .WithColor(new Color(random.Next(0,255),random.Next(0,255),random.Next(0,255)));
                 if (topGenres.Length > 2)
                 {
                     embedBuilder.AddField("============", $"Top genres are : {topGenres}", false);
@@ -210,11 +205,12 @@ namespace SpotifyBot.Modules
             var topGenres = SpotifyService.GetTopGenres(distinct_genres);
             try
             {
+                Random random = new Random();
                 embedBuilder.WithAuthor($"for {user.Username}")
                     .WithTitle($"How basic your music taste is, based on {popularities.Length} songs :")
                     .AddField("============", $"Your playlist is {Math.Round(popularities.Average(), 1)}% basic.", false)
                     .WithCurrentTimestamp()
-                    .WithColor(Color.Purple);
+                    .WithColor(new Color(random.Next(0,255),random.Next(0,255),random.Next(0,255)));
                 if (topGenres.Length > 2)
                 {
                     embedBuilder.AddField("============", $"Top genres are : {topGenres}", false);
