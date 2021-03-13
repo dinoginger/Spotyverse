@@ -10,6 +10,8 @@ using Swan;
 
 namespace SpotifyBot
 {
+     
+    
     public class Program
     {
         static void Main(string[] args)
@@ -18,6 +20,7 @@ namespace SpotifyBot
 
         private readonly string configPath = @"C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\bot\_config.json";
         private string bot_token;
+        public static string invite_link;
         
         private DiscordSocketClient _client;
 
@@ -41,8 +44,9 @@ namespace SpotifyBot
         {
             StreamReader r = new StreamReader(configPath);
             string json = r.ReadToEnd();
-            dynamic token = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
-            return token.TestBot_token;
+            dynamic config_file = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+            invite_link = config_file.Invite_link;
+            return config_file.TestBot_token;
         }
     }
 }

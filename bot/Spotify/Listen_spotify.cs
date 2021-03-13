@@ -51,8 +51,7 @@ namespace SpotifyBot.Spotify
             string data_json = result.Tracks.ToJson();
             
             dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(data_json);
-
-            //var link = data.Items[0].ExternalUrls.spotify; //АДРЕСА url ТРЕКУ
+            
             var popularity = data.Items[0].Popularity; //популярність треку
             
             //GenreSearch

@@ -15,23 +15,10 @@ namespace SpotifyBot.Modules
     public class Test : ModuleBase<SocketCommandContext>
     {
 
-        [Command("Test")]
-        public async Task UserInfo(SocketUser user = null)
+        [Command("invite")]
+        public async Task UserInfo()
         {
-            if (user == null)
-            {
-                user = Context.User;
-            }
-
-            var activities = user.Activities;
-            foreach (var activity in activities)
-            {
-                if (activity is SpotifyGame spot)
-                {
-                    await Context.Channel.SendMessageAsync(
-                        $"You are currently listening to {spot.TrackTitle} by {spot.Artists.First()}");
-                }
-            }
+            await ReplyAsync($"Here is my link invite : {Program.invite_link}");
         }
 
         [Command("help")]
