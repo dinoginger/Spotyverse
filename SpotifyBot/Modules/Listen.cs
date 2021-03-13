@@ -33,7 +33,9 @@ namespace SpotifyBot.Modules
 
 
         [Command("listen", RunMode = RunMode.Async)]
-        [Ratelimit(1,5,Measure.Minutes, RatelimitFlags.None)] //My cooldown attr
+        //Here goes default ratelimit, in prioritized is my own.
+        //Idk why but it wont work good otherwise ¯\_(ツ)_/¯
+        [Ratelimit(1,5,Measure.Minutes, RatelimitFlags.None)]
         [Priority(1)] //less prioritized
         public async Task Listenn(float minutes)
         {
@@ -136,7 +138,7 @@ namespace SpotifyBot.Modules
         /// <param name="user"></param>
         /// <returns></returns>
         [Command("listen", RunMode = RunMode.Async)]
-        [MyRatelimit(1,5,Measure.Minutes, RatelimitFlags.None)] //default cooldown attr, or else it wont work
+        [MyRatelimit(1,5,MyMeasure.Minutes, RatelimitFlags.None)] //default cooldown attr, or else it wont work
         [Priority(2)] //prioritized
         public async Task Listenn(float minutes, SocketUser user) //Перегруз де юзер задає скільки часу він хоче щоб його слухали
         {

@@ -48,6 +48,7 @@ namespace SpotifyBot.Modules
         
 
         [Command("Search")]
+        [MyRatelimit(3, 30,MyMeasure.Seconds)]
         public async Task search([Remainder] string msg)
         {
             

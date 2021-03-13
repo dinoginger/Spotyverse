@@ -9,6 +9,18 @@ using SpotifyBot.Service;
 
 namespace SpotifyBot.Other
 {
+  public enum MyMeasure
+  {
+    /// <summary>Period is measured in days.</summary>
+    Days,
+    /// <summary>Period is measured in hours.</summary>
+    Hours,
+    /// <summary>Period is measured in minutes.</summary>
+    Minutes,
+    /// <summary>Period is measured in seconds.</summary>
+    Seconds,
+  }
+  
      /// <summary>
   ///     Sets how often a user is allowed to use this command
   ///     or any command in this module.
@@ -41,7 +53,7 @@ namespace SpotifyBot.Other
     ///     The scale in which the <paramref name="period" /> parameter should be measured.
     /// </param>
     /// <param name="flags">Flags to set behavior of the ratelimit.</param>
-    public MyRatelimitAttribute(uint times, double period, Measure measure, RatelimitFlags flags = RatelimitFlags.None)
+    public MyRatelimitAttribute(uint times, double period, MyMeasure measure, RatelimitFlags flags = RatelimitFlags.None)
     {
       this._invokeLimit = times;
       this._noLimitInDMs = (flags & RatelimitFlags.NoLimitInDMs) == RatelimitFlags.NoLimitInDMs;
@@ -50,14 +62,17 @@ namespace SpotifyBot.Other
       TimeSpan timeSpan;
       switch (measure)
       {
-        case Measure.Days:
+        case MyMeasure.Days:
           timeSpan = TimeSpan.FromDays(period);
           break;
-        case Measure.Hours:
+        case MyMeasure.Hours:
           timeSpan = TimeSpan.FromHours(period);
           break;
-        case Measure.Minutes:
+        case MyMeasure.Minutes:
           timeSpan = TimeSpan.FromMinutes(period);
+          break;
+        case MyMeasure.Seconds:
+          timeSpan = TimeSpan.FromSeconds(period);
           break;
         default:
           throw new ArgumentOutOfRangeException(nameof (period), "Argument was not within the valid range.");
@@ -114,7 +129,7 @@ namespace SpotifyBot.Other
       if (commandTimeout2.TimesInvoked >= this._invokeLimit)
       {
         CooldownFix.wasSuccess = true;
-        return Task.FromResult<PreconditionResult>(PreconditionResult.FromError($"Sheesh.. :eyes: this command is on cooldown for `{(this._invokeLimitPeriod - (utcNow - commandTimeout2.FirstInvoke)).ToString(@"hh\:mm\:ss")}`"));
+        return Task.FromResult<PreconditionResult>(PreconditionResult.FromError(this.ErrorMessage ?? $"Sheesh.. :eyes: this command is on cooldown for `{(this._invokeLimitPeriod - (utcNow - commandTimeout2.FirstInvoke)).ToString(@"hh\:mm\:ss")}`"));
       }
 
       this._invokeTracker[key] = commandTimeout2;
