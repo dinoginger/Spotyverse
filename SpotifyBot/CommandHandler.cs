@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using Discord;
-using Discord.Addons.Preconditions;
 using Discord.WebSocket;
 using Discord.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using SpotifyBot.Other;
 using SpotifyBot.Service;
-using Swan;
+
 
 namespace SpotifyBot
 {
@@ -40,17 +38,18 @@ namespace SpotifyBot
             // We can tell the user what went wrong 
             if (!string.IsNullOrEmpty(result?.ErrorReason)) //TODO: попроацювати над ерор хендлером більше, після пулу TimeOut бранчу допрацювати і з ним теж
             {
-                if (command.Value.Name == "listen")
+                if (result.Error.Value == CommandError.ParseFailed || result.Error.Value == CommandError.BadArgCount)
                 {
-                    ErrorResponse.ListenErrorResponder(context, result);
+                    await ErrorResponse.BadArg_Parse_Response(command, context);
                 }
+                
                 else
                 {
                     await context.Channel.SendMessageAsync(result.ErrorReason);
                 }
 
                 var commandName = command.IsSpecified ? command.Value.Name : "A command";
-                Console.WriteLine($"Command {commandName} was failed to execute at {DateTime.UtcNow}. Reason : {result.Error.ToString()}: {result.ErrorReason}");
+                Console.WriteLine($"Command {commandName} was failed to execute at {DateTime.UtcNow}. {result.Error.ToString()}: {result.ErrorReason}");
                 
                 //This is run for cooldown issue.
                 var a = _services.GetService<_CooldownFixer>();

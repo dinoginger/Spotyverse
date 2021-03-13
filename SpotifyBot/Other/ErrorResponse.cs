@@ -9,16 +9,16 @@ namespace SpotifyBot.Other
     /// </summary>
     public class ErrorResponse
     {
-        public static async Task ListenErrorResponder(ICommandContext context, IResult result)
+        
+        public static async Task BadArg_Parse_Response(Optional<CommandInfo> command, ICommandContext context)
         {
-            if (result.Error.Value == CommandError.ParseFailed)
+            if (command.Value.Name == "listen")
             {
                 await context.Channel.SendMessageAsync("Hey, this commands input parameters are `!listen <number>` or `!listen <number> @user_mention`");
-
             }
-            else
+            else if (command.Value.Name == "search")
             {
-                await context.Channel.SendMessageAsync(result.ErrorReason);
+                await context.Channel.SendMessageAsync("Hey, this commands input parameter is `!search <search request>`");
             }
         }
     }
