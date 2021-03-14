@@ -13,19 +13,19 @@ namespace SpotifyBot.Service
     {
         // declare the fields used later in this class
         private readonly ILogger _logger;
-        private readonly DiscordSocketClient _discord;
+        private readonly DiscordSocketClient _client;
         private readonly CommandService _commands;
 
         public LoggingService(IServiceProvider services)
         { 
             // get the services we need via DI, and assign the fields declared above to them
-            _discord = services.GetRequiredService<DiscordSocketClient>(); 
+            _client = services.GetRequiredService<DiscordSocketClient>(); 
             _commands = services.GetRequiredService<CommandService>();
-            _logger = (ILogger)services.GetRequiredService<LoggingService>();
+            _logger = services.GetRequiredService<ILogger<LoggingService>>(); //<ILogger<LoggingService>>(); means just type change
 
             // hook into these events with the methods provided below
-            _discord.Ready += OnReadyAsync;
-            _discord.Log += OnLogAsync;
+            _client.Ready += OnReadyAsync;
+            _client.Log += OnLogAsync;
             _commands.Log += OnLogAsync;
         }
 
