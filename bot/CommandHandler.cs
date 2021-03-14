@@ -18,11 +18,12 @@ namespace SpotifyBot
         private CommandService _commands;
         private IServiceProvider _services;
         
-        public CommandHandler(IServiceProvider services, CommandService commands, DiscordSocketClient client)
-        { 
-            _client = client;
-            _commands = commands;
+        public CommandHandler(IServiceProvider services)
+        {
             _services = services;
+            _client = services.GetRequiredService<DiscordSocketClient>();
+            _commands = services.GetRequiredService<CommandService>();
+            
             _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
             // Hook the execution event
             _commands.CommandExecuted += OnCommandExecutedAsync;
@@ -36,7 +37,7 @@ namespace SpotifyBot
             // execution in this event.
 
             // We can tell the user what went wrong 
-            if (!string.IsNullOrEmpty(result?.ErrorReason)) //TODO: попроацювати над ерор хендлером більше, після пулу TimeOut бранчу допрацювати і з ним теж
+            if (!string.IsNullOrEmpty(result?.ErrorReason))
             {
                 if (result.Error.Value == CommandError.ParseFailed || result.Error.Value == CommandError.BadArgCount)
                 {

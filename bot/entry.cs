@@ -6,16 +6,44 @@ using System.Threading.Tasks;
 using Discord.Commands;
 using SpotifyBot.Service;
 using Microsoft.Extensions.DependencyInjection;
-using Swan;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Core;
 
 namespace SpotifyBot
 {
-     
     
     public class Program
     {
-        static void Main(string[] args)
-            => new Program().StartAsync().GetAwaiter().GetResult();
+        
+        public static string _logLevel;
+        static void Main(string[] args = null)
+        {
+            
+            //setting log level if run specialised, else with information;
+            if (args.Length > 0)
+            {
+                _logLevel = args[0];
+            }
+            
+            /*
+            Write out to the console and to a file
+
+            The file will be stored in the logs directory (from the project root), and will create a new file named csharpi.log 
+
+            The files will roll every day, and have each day’s date as a timestamp (Serilog takes care of this magic)
+             */
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File("logs/bot.log", rollingInterval: RollingInterval.Day)
+                .WriteTo.Console()
+                .CreateLogger();
+            
+            
+            
+            new Program().MainAsync().GetAwaiter().GetResult();
+        }
+
+
 
 
         private readonly string configPath = @"C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\bot\_config.json";
@@ -26,18 +54,32 @@ namespace SpotifyBot
 
         private CommandService _commands;
 
-        private async Task StartAsync()
+        private async Task MainAsync()
         {
-            _client = new DiscordSocketClient();
-            bot_token = GetToken();
-            await _client.LoginAsync(TokenType.Bot, bot_token);
-            await _client.SetGameAsync("your music | !help", null,ActivityType.Listening);
-            await _client.StartAsync(); //?????
-            var Service_init  = new Initialize(_client);
-            var service_provider = Service_init.BuildServiceProvider();
-            _commands = service_provider.GetService<CommandService>();
-            var _handler = new CommandHandler(service_provider, _commands, _client); 
-            await Task.Delay(-1);
+            using (var services = service.BuildServiceProvider()) //(Comments for me) using in brackets mean declaring and redeclaring stuff??;
+            {
+                // get the client and assign to client 
+                // you get the services via GetRequiredService<T>
+                var client = services.GetRequiredService<DiscordSocketClient>();
+                _client = client;
+                
+                // setup logging and the ready event
+                services.GetRequiredService<LoggingService>();
+                
+                
+                bot_token = GetToken();
+                await _client.LoginAsync(TokenType.Bot, bot_token);
+                await _client.SetGameAsync("your music | !help", null, ActivityType.Listening);
+                await _client.StartAsync(); //?????
+                //Мінятимемо зараз це
+                //var service_provider = Service_init.BuildServiceProvider();
+                _commands = services.GetService<CommandService>();
+
+                //Init Command handler from services.
+                
+                var handler = services.GetRequiredService<CommandHandler>();
+                await Task.Delay(-1);
+            }
         }
 
         private string GetToken()
