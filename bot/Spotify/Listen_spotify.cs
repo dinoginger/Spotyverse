@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -97,18 +98,20 @@ namespace SpotifyBot.Spotify
                 Console.WriteLine("{0}x {1}", word.Count(), word.Key);
             }
 
+            //////НЕ ПРАЦЮЄЄЄЄЄЄЄЄЄЄЄЄЄЄЄЄЄЄ
             int mm = 0;
+            List<string> list = new List<string>();
             foreach (var genre in genre_list )
             {
-                if (genre.Count() >= 2 && mm < 3)
+                if (genre.Count() >= 2 && mm < 3) //mm < 3 bc we want ESPECIALLY 3 top genres.
                 {
-                    topgenres = topgenres + "/" + genre.Key;
+                    list.Add(genre.Key);
                     mm++;
                 }
             }
-
+            
+            topgenres = String.Join(", ", list); //adding all to string separated by , 
             return topgenres;
-            //TODO: return genre string look better, do stuff with slashes
             
         }
     }

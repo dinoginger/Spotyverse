@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
+using Microsoft.VisualBasic;
 using SpotifyAPI.Web;
 using Swan;
 
@@ -88,11 +89,13 @@ namespace SpotifyBot.Spotify
                             if (artist.Genres.ToArray().Length != 0)
                             {
                                 string genres_string = "";
+                                List<string> list = new List<string>();
                                 foreach (var genre in artist.Genres.ToArray())
                                 {
-                                    genres_string = genres_string + "," + genre;
+                                    list.Add(genre);
                                 }
-
+                                
+                                genres_string = String.Join(", ", list);
                                 Artist_field.Value += $"Main genres : {genres_string}";
                             }
 

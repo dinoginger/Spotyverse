@@ -93,7 +93,7 @@ namespace SpotifyBot.Modules
 
                 //Console.WriteLine("\n\n");
 
-                var distinct_data = songData.Distinct();
+                var distinct_data = songData.Distinct(); //Deletes similar elements.
                 int[] popularities = new int[distinct_data.Count()];
                 int dd = 0;
                 string distinct_genres = "";
@@ -103,7 +103,7 @@ namespace SpotifyBot.Modules
                     Console.WriteLine(data.genre_string);
                     popularities[dd] = data.popularity;
                     dd++;
-                    distinct_genres = distinct_genres + "+" + data.genre_string;
+                    distinct_genres = distinct_genres + "+" + data.genre_string;//all genres to one string, in order to pass it to GetTopGenres();
                 }
 
                 //Console.WriteLine($"\n\n{distinct_genres}"); - in case you wanna see it
@@ -112,13 +112,13 @@ namespace SpotifyBot.Modules
                 Random random = new Random();
                 embedBuilder.WithAuthor($"for {user.Username}")
                     .WithTitle($"How basic your music taste is, based on {popularities.Length} songs :")
-                    .AddField("============", $"Your playlist is {Math.Round(popularities.Average(), 1)}% basic.",
+                    .AddField("============", $"Your playlist is `{Math.Round(popularities.Average(), 1)}%` basic.", //rounds to one decimal after comma
                         false)
                     .WithCurrentTimestamp()
                     .WithColor(new Color(random.Next(0, 255), random.Next(0, 255), random.Next(0, 255)));
                 if (topGenres.Length > 2)
                 {
-                    embedBuilder.AddField("============", $"Top genres are : {topGenres}", false);
+                    embedBuilder.AddField("============", $"**Top genres are** : {topGenres}", false);
                 }
                 else //Do funne face when no topgenres
                 {
