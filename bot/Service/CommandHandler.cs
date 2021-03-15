@@ -5,11 +5,11 @@ using Discord;
 using Discord.WebSocket;
 using Discord.Commands;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SpotifyBot.Other;
-using SpotifyBot.Service;
 
 
-namespace SpotifyBot
+namespace SpotifyBot.Service
 {
     public class CommandHandler
     
@@ -17,12 +17,15 @@ namespace SpotifyBot
         private DiscordSocketClient _client;
         private CommandService _commands;
         private IServiceProvider _services;
+        private ILogger _logger;
         
-        public CommandHandler(IServiceProvider services, CommandService commands, DiscordSocketClient client)
-        { 
-            _client = client;
-            _commands = commands;
+        public CommandHandler(IServiceProvider services)
+        {
             _services = services;
+            _client = services.GetRequiredService<DiscordSocketClient>();
+            _commands = services.GetRequiredService<CommandService>();
+            _logger = services.GetRequiredService<ILogger<CommandHandler>>();
+            
             _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
             // Hook the execution event
             _commands.CommandExecuted += OnCommandExecutedAsync;
@@ -36,7 +39,7 @@ namespace SpotifyBot
             // execution in this event.
 
             // We can tell the user what went wrong 
-            if (!string.IsNullOrEmpty(result?.ErrorReason)) //TODO: попроацювати над ерор хендлером більше, після пулу TimeOut бранчу допрацювати і з ним теж
+            if (!string.IsNullOrEmpty(result?.ErrorReason))
             {
                 if (result.Error.Value == CommandError.ParseFailed || result.Error.Value == CommandError.BadArgCount)
                 {
@@ -49,7 +52,8 @@ namespace SpotifyBot
                 }
 
                 var commandName = command.IsSpecified ? command.Value.Name : "A command";
-                Console.WriteLine($"Command {commandName} was failed to execute at {DateTime.UtcNow}. {result.Error.ToString()}: {result.ErrorReason}");
+                _logger.LogError($"Command {commandName} was failed to execute for {context.User.Username}. {result.Error.ToString()}: {result.ErrorReason}");
+                
                 
                 //This is run for cooldown issue.
                 var a = _services.GetService<_CooldownFixer>();
@@ -60,7 +64,7 @@ namespace SpotifyBot
             else
             {
                 var commandName = command.IsSpecified ? command.Value.Name : "A command";
-                Console.WriteLine($"Command {commandName} was executed at {DateTime.UtcNow}.");
+                _logger.LogInformation($"Command {commandName} was executed for {context.User.Username}.");
                
             }
 
