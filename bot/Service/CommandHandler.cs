@@ -5,11 +5,11 @@ using Discord;
 using Discord.WebSocket;
 using Discord.Commands;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SpotifyBot.Other;
-using SpotifyBot.Service;
 
 
-namespace SpotifyBot
+namespace SpotifyBot.Service
 {
     public class CommandHandler
     
@@ -17,12 +17,14 @@ namespace SpotifyBot
         private DiscordSocketClient _client;
         private CommandService _commands;
         private IServiceProvider _services;
+        private ILogger _logger;
         
         public CommandHandler(IServiceProvider services)
         {
             _services = services;
             _client = services.GetRequiredService<DiscordSocketClient>();
             _commands = services.GetRequiredService<CommandService>();
+            _logger = services.GetRequiredService<ILogger<CommandHandler>>();
             
             _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
             // Hook the execution event
@@ -50,7 +52,8 @@ namespace SpotifyBot
                 }
 
                 var commandName = command.IsSpecified ? command.Value.Name : "A command";
-                Console.WriteLine($"Command {commandName} was failed to execute at {DateTime.UtcNow}. {result.Error.ToString()}: {result.ErrorReason}");
+                _logger.LogError($"Command {commandName} was failed to execute for {context.User.Username}. {result.Error.ToString()}: {result.ErrorReason}");
+                
                 
                 //This is run for cooldown issue.
                 var a = _services.GetService<_CooldownFixer>();
@@ -61,7 +64,7 @@ namespace SpotifyBot
             else
             {
                 var commandName = command.IsSpecified ? command.Value.Name : "A command";
-                Console.WriteLine($"Command {commandName} was executed at {DateTime.UtcNow}.");
+                _logger.LogInformation($"Command {commandName} was executed for {context.User.Username}.");
                
             }
 

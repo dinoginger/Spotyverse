@@ -25,7 +25,7 @@ namespace SpotifyBot.Service
                 .AddSingleton<_CooldownFixer>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<LoggingService>()
-                .AddLogging(configure => configure.AddSerilog());
+                .AddLogging(configure => configure.AddSerilog()); //Registering ILogger to use in any other injected service element
 
             
             //Setting up log level if it was given in Program.cs;

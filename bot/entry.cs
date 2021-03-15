@@ -34,7 +34,7 @@ namespace SpotifyBot
             The files will roll every day, and have each day’s date as a timestamp (Serilog takes care of this magic)
              */
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.File("logs/bot.log", rollingInterval: RollingInterval.Day)
+                .WriteTo.File(@"C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\bot\logs\myk.log",rollingInterval: RollingInterval.Minute)
                 .WriteTo.Console()
                 .CreateLogger();
             
@@ -71,12 +71,9 @@ namespace SpotifyBot
                 await _client.LoginAsync(TokenType.Bot, bot_token);
                 await _client.SetGameAsync("your music | !help", null, ActivityType.Listening);
                 await _client.StartAsync(); //?????
-                //Мінятимемо зараз це
-                //var service_provider = Service_init.BuildServiceProvider();
                 _commands = services.GetService<CommandService>();
 
                 //Init Command handler from services.
-                
                 var handler = services.GetRequiredService<CommandHandler>();
                 await Task.Delay(-1);
             }

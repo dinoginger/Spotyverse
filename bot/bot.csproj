@@ -21,4 +21,8 @@
       <PackageReference Include="Unosquare.Swan.Lite" Version="3.1.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="logs" />
+    </ItemGroup>
+
 </Project>
