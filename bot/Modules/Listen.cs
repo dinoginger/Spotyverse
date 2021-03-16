@@ -46,9 +46,13 @@ namespace SpotifyBot.Modules
             {
                 Console.Write(user.Username + "\n"); //test : see which user we listen to 
                 var embedBuilder = new EmbedBuilder();
-                if (minutes <= 0.5f)
+                if (minutes < 0.5f)
                 {
                     throw new ArgumentException("Time period must be more than 0,5 min.");
+                }
+                if (minutes > 60f)
+                {
+                    throw new ArgumentException("Time period cant be more than 1 hour.");
                 }
 
                 int p = (int) (minutes * 60) / wait_seconds; //How many times loop will run
@@ -121,7 +125,7 @@ namespace SpotifyBot.Modules
                 embedBuilder.WithAuthor($"for {user.Username}")
                     .WithCurrentTimestamp()
                     .WithColor(new Color(random.Next(0, 255), random.Next(0, 255), random.Next(0, 255)))
-                    .WithThumbnailUrl("https://mulder-onions.com/wp-content/uploads/2017/02/White-square-300x300.jpg");
+                    .WithThumbnailUrl("https://p7.hiclipart.com/preview/833/349/159/spotify-logo-streaming-media-apple-music-others.jpg");
                 if (topGenres.Length > 2)
                 {
                     var genre_field = new EmbedFieldBuilder();
