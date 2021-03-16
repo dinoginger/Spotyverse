@@ -35,7 +35,7 @@ namespace SpotifyBot.Spotify
 /// <exception cref="ArgumentException"></exception>
         public static async Task<Tuple<int, string>> Listen(string songName)
         {
-            //Getting tokens from our json.
+            
             GetSpotifyTokens();
 
             //Connection of Bot client

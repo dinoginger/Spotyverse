@@ -48,7 +48,10 @@ namespace SpotifyBot.Service
                 
                 else
                 {
-                    await context.Channel.SendMessageAsync(result.ErrorReason);
+                    if (result.Error != CommandError.UnknownCommand)
+                    {
+                        await context.Channel.SendMessageAsync(result.ErrorReason);
+                    }
                     
                 }
 
