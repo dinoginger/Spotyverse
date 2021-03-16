@@ -1,4 +1,4 @@
-# SpotifyBot_test
+# SpotifyBot_
 This soon will become first deployed version of SpotifyAnalyzer bot, which main goal is doing funny thingies with music.
 ## Usage
 Prefix for commands is _"<"_.
