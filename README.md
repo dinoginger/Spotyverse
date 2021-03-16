@@ -1,23 +1,30 @@
 # SpotifyBot_
-Bot, which gives useful requested data by using Spotify API.
-## Instalation
-List of main packages
-```bash
-Discord.Net 
-Discord.Addons.Preconditions
-SpotifyAPI.Web 
-Serilog
-```
-Also you need to create your Spotify application, in order to get tokens for Spotify service to work.
-It can be done [here](https://developer.spotify.com/dashboard/applications).
+Analyses you music taste and provide information about songs and artists.
 
 ## Usage
 Prefix for commands is _"<<"_.
 Here is the  small list of stuff it can do : 
 Command (and syntax)| What it does
 ------------ | -------------
-<<help | Sends embed with list of commanmds
-<<invite | Sends you bot invite link in DMs
-<<search (string search_request) | Returns pretty embed, for artist/album/track info request.
-<<listen (int n) | Invokes async command, which lasts for (int n) minutes, and checks current users Spotify discord activity, returning you simple analyzis in embed (NOTE : Your spotify must be connected to discord)
-<<listen (int n, SocketUser user) | Overload, checks activity for custom @user.
+<<help | Prints list of supported commands
+<<invite | Sends your bot invite link in DMs
+<<search (string search_request) | Returns formatted embed, for artist/album/track info request.
+<<listen (int n) | Invokes async command, which lasts for (int n) minutes and checks current users Spotify discord activity. Returns music taste analyzis in embed (NOTE : Your Spotify account must be connected to Discord)
+<<listen (int n, String user) | Checks the activity for a user (String user).
+
+## Instalation
+1. You need to create your Spotify application
+2. Get tokens for Spotify service (from [here](https://developer.spotify.com/dashboard/applications).
+3. Get tocken from Discord
+4. Paste the tokens in config file.
+
+
+List of main packages used:
+```bash
+Discord.Net 
+Discord.Addons.Preconditions
+SpotifyAPI.Web 
+Serilog
+```
+
+
