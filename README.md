@@ -1,5 +1,16 @@
 # SpotifyBot_
-This soon will become first deployed version of SpotifyAnalyzer bot, which main goal is doing funny thingies with music.
+Bot, which gives useful requested data by using Spotify API.
+## Instalation
+List of main packages
+```bash
+Discord.Net 
+Discord.Addons.Preconditions
+SpotifyAPI.Web 
+Serilog
+```
+Also you need to create your Spotify application, in order to get tokens for Spotify service to work.
+It can be done [here](https://developer.spotify.com/dashboard/applications).
+
 ## Usage
 Prefix for commands is _"<<"_.
 Here is the  small list of stuff it can do : 
