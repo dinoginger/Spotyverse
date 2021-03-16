@@ -41,18 +41,25 @@ namespace SpotifyBot.Service
             // We can tell the user what went wrong 
             if (!string.IsNullOrEmpty(result?.ErrorReason))
             {
-                if (result.Error.Value == CommandError.ParseFailed || result.Error.Value == CommandError.BadArgCount)
+                if (result.Error.Value == CommandError.ParseFailed || result.Error.Value == CommandError.BadArgCount || result.Error.Value == CommandError.ObjectNotFound)
                 {
                     await ErrorResponse.BadArg_Parse_Response(command, context);
                 }
                 
                 else
                 {
-                    await context.Channel.SendMessageAsync(result.ErrorReason);
+                    //if (result.ErrorReason.Length < 20)//Prevent user from getting sys-exception errors.
+                    //{
+                        await context.Channel.SendMessageAsync(result.ErrorReason);
+                   // }
+                    
                 }
 
                 var commandName = command.IsSpecified ? command.Value.Name : "A command";
-                _logger.LogError($"Command {commandName} was failed to execute for {context.User.Username}. {result.Error.ToString()}: {result.ErrorReason}");
+                if (result.Error != CommandError.UnmetPrecondition) //Ignore ratelimits, they will occur a lot.
+                {
+                    _logger.LogError($"Command {commandName} was failed to execute for {context.User.Username}. {result.Error.ToString()}: {result.ErrorReason}");
+                }
                 
                 
                 //This is run for cooldown issue.
@@ -61,12 +68,14 @@ namespace SpotifyBot.Service
 
 
             }
+            /*
             else
             {
                 var commandName = command.IsSpecified ? command.Value.Name : "A command";
                 _logger.LogInformation($"Command {commandName} was executed for {context.User.Username}.");
                
-            }
+            } Dont need logging of successful tasks atm.
+            */
 
             
             

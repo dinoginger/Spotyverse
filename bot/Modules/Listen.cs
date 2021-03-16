@@ -110,26 +110,38 @@ namespace SpotifyBot.Modules
 
                 var topGenres = SpotifyService.GetTopGenres(distinct_genres);
                 Random random = new Random();
+                var field = new EmbedFieldBuilder();
+                
+                field.WithName($"How basic your music taste is, based on {popularities.Length} song(s) ");
+                field.WithValue($"Your playlist is `{Math.Round(popularities.Average(), 1)}%` basic.");
+                field.IsInline = true;
+                
+                
+                embedBuilder.AddField(field);
                 embedBuilder.WithAuthor($"for {user.Username}")
-                    .WithTitle($"How basic your music taste is, based on {popularities.Length} songs :")
-                    .AddField("============", $"Your playlist is `{Math.Round(popularities.Average(), 1)}%` basic.", //rounds to one decimal after comma
-                        false)
                     .WithCurrentTimestamp()
-                    .WithColor(new Color(random.Next(0, 255), random.Next(0, 255), random.Next(0, 255)));
+                    .WithColor(new Color(random.Next(0, 255), random.Next(0, 255), random.Next(0, 255)))
+                    .WithThumbnailUrl("https://mulder-onions.com/wp-content/uploads/2017/02/White-square-300x300.jpg");
                 if (topGenres.Length > 2)
                 {
-                    embedBuilder.AddField("============", $"**Top genres are** : {topGenres}", false);
-                }
-                else //Do funne face when no topgenres
-                {
-                    embedBuilder.AddField("============", "^_^", false);
+                    var genre_field = new EmbedFieldBuilder();
+                    genre_field.WithName("**Top genres are** :");
+                    genre_field.IsInline = true;
+
+                    var genre_arr = topGenres.Split(", ");
+                    foreach (var genre in genre_arr)
+                    {
+                        genre_field.Value += $"• {genre}\n";
+                    }
+                    embedBuilder.AddField(genre_field);
                 }
 
                 await Context.Channel.SendMessageAsync("", false, embedBuilder.Build());
             }
             catch (Exception e)
             {
-                throw new Exception($"Command aborted : {e.Message}");
+
+                throw new ApplicationException($"Command aborted : {e.Message}");
             }
         }
     }

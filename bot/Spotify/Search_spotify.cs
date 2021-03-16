@@ -96,7 +96,7 @@ namespace SpotifyBot.Spotify
                                 }
                                 
                                 genres_string = String.Join(", ", list);
-                                Artist_field.Value += $"Main genres : {genres_string}";
+                                Artist_field.Value += $"Main genres : **{genres_string}**";
                             }
 
                             embedBuilder.AddField(Artist_field);

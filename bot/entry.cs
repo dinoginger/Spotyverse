@@ -8,7 +8,7 @@ using SpotifyBot.Service;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using Serilog.Core;
+using LogLevel = Swan.Logging.LogLevel;
 
 namespace SpotifyBot
 {
@@ -34,8 +34,9 @@ namespace SpotifyBot
             The files will roll every day, and have each day’s date as a timestamp (Serilog takes care of this magic)
              */
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.File(@"C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\bot\logs\myk.log",rollingInterval: RollingInterval.Minute)
+                .WriteTo.File(@"C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\bot\logs\myk.log",rollingInterval: RollingInterval.Day) //New log file is created every day.
                 .WriteTo.Console()
+                .MinimumLevel.Information()
                 .CreateLogger();
             
             
@@ -74,7 +75,7 @@ namespace SpotifyBot
                 _commands = services.GetService<CommandService>();
 
                 //Init Command handler from services.
-                var handler = services.GetRequiredService<CommandHandler>();
+                var handler = services.GetRequiredService<CommandHandler>();// <--- starts running on innit
                 await Task.Delay(-1);
             }
         }
