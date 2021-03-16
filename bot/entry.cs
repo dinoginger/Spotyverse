@@ -70,7 +70,7 @@ namespace SpotifyBot
                 
                 bot_token = GetToken();
                 await _client.LoginAsync(TokenType.Bot, bot_token);
-                await _client.SetGameAsync("your music | !help", null, ActivityType.Listening);
+                await _client.SetGameAsync("your music | <help", null, ActivityType.Listening);
                 await _client.StartAsync(); //?????
                 _commands = services.GetService<CommandService>();
 

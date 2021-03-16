@@ -85,7 +85,8 @@ namespace SpotifyBot.Service
             var message = msg as SocketUserMessage;
             if (message == null) return;
             int argPos = 0;
-            if (!(message.HasCharPrefix('!', ref argPos) ||
+            int argPos1 = 1;
+            if (!(message.HasCharPrefix('<', ref argPos) || 
                   message.HasMentionPrefix(_client.CurrentUser, ref argPos)) ||
                 message.Author.IsBot)
             {
