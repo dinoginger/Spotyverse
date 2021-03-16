@@ -58,9 +58,6 @@ namespace SpotifyBot.Modules
                 int p = (int) (minutes * 60) / wait_seconds; //How many times loop will run
                 song_data[] songData = new song_data[p];
                 int d = 0;
-                string[] artist = new string[p];
-                string[] title = new string[p];
-
                 await Context.Channel.SendMessageAsync("starting...");
                 for (int i = 0; i < p; i++)
                 {

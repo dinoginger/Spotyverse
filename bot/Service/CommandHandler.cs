@@ -48,15 +48,12 @@ namespace SpotifyBot.Service
                 
                 else
                 {
-                    //if (result.ErrorReason.Length < 20)//Prevent user from getting sys-exception errors.
-                    //{
-                        await context.Channel.SendMessageAsync(result.ErrorReason);
-                   // }
+                    await context.Channel.SendMessageAsync(result.ErrorReason);
                     
                 }
 
                 var commandName = command.IsSpecified ? command.Value.Name : "A command";
-                if (result.Error != CommandError.UnmetPrecondition) //Ignore ratelimits, they will occur a lot.
+                if (result.Error != CommandError.UnmetPrecondition && result.Error != CommandError.UnknownCommand) //Ignore ratelimits, they will occur a lot.
                 {
                     _logger.LogError($"Command {commandName} was failed to execute for {context.User.Username}. {result.Error.ToString()}: {result.ErrorReason}");
                 }
@@ -82,13 +79,16 @@ namespace SpotifyBot.Service
         }
         public async Task HandleCommandAsync(SocketMessage msg)
         {
+            
             var message = msg as SocketUserMessage;
+            if (message.Author.IsBot)
+            {
+                return;
+            }
             if (message == null) return;
             int argPos = 0;
-            int argPos1 = 1;
-            if (!(message.HasCharPrefix('<', ref argPos) || 
-                  message.HasMentionPrefix(_client.CurrentUser, ref argPos)) ||
-                message.Author.IsBot)
+            if (!((message.HasStringPrefix("<<", ref argPos) || 
+                   message.HasMentionPrefix(_client.CurrentUser, ref argPos))))
             {
                 return;
             }

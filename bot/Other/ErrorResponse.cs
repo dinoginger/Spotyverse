@@ -11,9 +11,9 @@ namespace SpotifyBot.Other
     public class ErrorResponse
     {
         private const string listen_response =
-            "Hey, this commands input parameters are `<listen [minutes]` or `<listen [minutes] [@mention]`";
+            "Hey, this commands input parameters are `<<listen [minutes]` or `<<listen [minutes] [@mention]`";
 
-        private const string search_response = "Hey, this commands input parameter is `<search <search request>`";
+        private const string search_response = "Hey, this commands input parameter is `<<search <search request>`";
         public static async Task BadArg_Parse_Response(Optional<CommandInfo> command, ICommandContext context)
         {
             if (command.Value.Name == "listen")
