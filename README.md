@@ -19,12 +19,5 @@ Command (and syntax)| What it does
 4. Paste the tokens in config file.
 
 
-List of main packages used:
-```bash
-Discord.Net 
-Discord.Addons.Preconditions
-SpotifyAPI.Web 
-Serilog
-```
 
 
