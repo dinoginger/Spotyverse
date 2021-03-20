@@ -10,3 +10,6 @@ bin/
 
 #config file
 /bot/_config.json
+
+#log files
+/bot/logs/

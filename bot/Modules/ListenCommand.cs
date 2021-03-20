@@ -5,26 +5,34 @@ using Discord;
 using Discord.Addons.Preconditions;
 using Discord.Commands;
 using Discord.WebSocket;
-using SpotifyBot.Spotify;
+using Discord_API1.Service.Spotify;
+using Microsoft.Extensions.DependencyInjection;
 using SpotifyBot.Other;
-using Swan;
+
 
 
 namespace SpotifyBot.Modules
 {
-    public class Listen : ModuleBase<SocketCommandContext>
+    public class ListenCommand : ModuleBase<SocketCommandContext>
     {
         private struct song_data
         {
             public string songname;
-            public int popularity; 
+            public int popularity;
             public string genre_string;
-        } 
-        
+        }
+
         ///Default value of minutes command !listen runs, if not overloaded with minutes parameter
-        private const int command_cooldown = 5;//--minutes \\\\Determines cooldown for our listen command;
+        private const int command_cooldown = 5; //--minutes \\\\Determines cooldown for our listen command;
+
         private const int wait_seconds = 30; //--seconds \\\\\Period of time we wait before checking song again
 
+        private SpotifyService spotify;
+
+        public ListenCommand(IServiceProvider serviceProvider)
+        {
+            spotify = serviceProvider.GetRequiredService<SpotifyService>();
+        }
         
         /// <summary>
         /// Listen command description
@@ -32,10 +40,10 @@ namespace SpotifyBot.Modules
         /// <param name="minutes"></param>
         /// <param name="user"></param>
         /// <returns></returns>
-        
+
         [Command("listen", RunMode = RunMode.Async)]
         [MyRatelimit(1,command_cooldown,MyMeasure.Minutes, RatelimitFlags.None)]
-        public async Task Listenn(float minutes, SocketUser user = null) 
+        public async Task Listenn(float minutes,SocketUser user = null)
         {
             if (user == null)
             {
@@ -69,7 +77,7 @@ namespace SpotifyBot.Modules
                         {
                             Spotify_exists = true;
                             Console.WriteLine($"{d + 1} song recieved");
-                            var tuple = SpotifyService.Listen(spot.TrackTitle + " " + spot.Artists.First());
+                            var tuple = spotify.Listen(spot.TrackTitle + " " + spot.Artists.First());
                             songData[d].popularity = tuple.Result.Item1;
                             songData[d].genre_string = tuple.Result.Item2;
 
@@ -109,7 +117,7 @@ namespace SpotifyBot.Modules
 
                 //Console.WriteLine($"\n\n{distinct_genres}"); - in case you wanna see it
 
-                var topGenres = SpotifyService.GetTopGenres(distinct_genres);
+                var topGenres = spotify.GetTopGenres(distinct_genres);
                 Random random = new Random();
                 var field = new EmbedFieldBuilder();
                 
@@ -147,5 +155,6 @@ namespace SpotifyBot.Modules
         }
     }
 }
+
      
      
