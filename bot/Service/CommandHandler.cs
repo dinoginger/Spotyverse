@@ -43,7 +43,7 @@ namespace SpotifyBot.Service
             {
                 if (result.Error.Value == CommandError.ParseFailed || result.Error.Value == CommandError.BadArgCount || result.Error.Value == CommandError.ObjectNotFound)
                 {
-                    await ErrorResponse.BadArg_Parse_Response(command, context);
+                    await UserErrorResponses.BadArg_Parse_Response(command, context);
                 }
                 
                 else

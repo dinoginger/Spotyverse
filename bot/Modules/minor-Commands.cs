@@ -9,6 +9,7 @@ namespace SpotifyBot.Modules
     {
 
         [Command("invite")]
+        [Alias("inv")]
         public async Task invite()
         {
             Discord.IDMChannel gencom = await Context.Message.Author.GetOrCreateDMChannelAsync();

@@ -8,7 +8,7 @@ namespace SpotifyBot.Other
     /// <summary>
     /// This class is for displaying better looking response to discord user.
     /// </summary>
-    public class ErrorResponse
+    public class UserErrorResponses
     {
         private const string listen_response =
             "Hey, this commands input parameters are `<<listen [minutes]` or `<<listen [minutes] [@mention]`";

@@ -15,32 +15,25 @@ namespace SpotifyBot.Modules
         {
             spotify = serviceProvider.GetRequiredService<SpotifyService>();
         }
+        
+        
         [Command("search")]
+        
         [MyRatelimit(3, 30,MyMeasure.Seconds)]
-        public async Task search([Remainder] string msg)
+        public async Task<RuntimeResult> search([Remainder] string msg)
         {
-            
-            if (msg != null)
-            {
-                Console.WriteLine("we in!");
-                try
-                {
-                    EmbedBuilder embedBuilerr = await spotify.Search(msg);
-                    await Context.Channel.SendMessageAsync("", false, embedBuilerr.Build());
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("we messed up");
-                    throw;
-                }
-                
-
+            Console.WriteLine("we in!"); 
+            try 
+            { 
+                EmbedBuilder embedBuilerr = await spotify.Search(msg); 
+                await Context.Channel.SendMessageAsync("", false, embedBuilerr.Build());
             }
-            else
+            catch (Exception e)
             {
-                Console.WriteLine("msg is null");
+                Console.WriteLine("we messed up");
+                return MyCommandResult.FromError(e.Message);
             }
-            
+            return MyCommandResult.FromSuccess();
         }
     }
 }

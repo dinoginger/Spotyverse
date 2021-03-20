@@ -43,7 +43,7 @@ namespace SpotifyBot.Modules
 
         [Command("listen", RunMode = RunMode.Async)]
         [MyRatelimit(1,command_cooldown,MyMeasure.Minutes, RatelimitFlags.None)]
-        public async Task Listenn(float minutes,SocketUser user = null)
+        public async Task<RuntimeResult> Listenn(float minutes,SocketUser user = null)
         {
             if (user == null)
             {
@@ -146,11 +146,12 @@ namespace SpotifyBot.Modules
                 }
 
                 await Context.Channel.SendMessageAsync("", false, embedBuilder.Build());
+                return MyCommandResult.FromSuccess();
             }
             catch (Exception e)
             {
 
-                throw new ApplicationException($"Command aborted : {e.Message}");
+                return MyCommandResult.FromError($"Command aborted : {e.Message}");
             }
         }
     }
