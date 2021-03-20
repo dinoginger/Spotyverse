@@ -1,5 +1,6 @@
 {
   "TestBot_token" : "your discord bot token here",
   "Spotify_id" : "your spotify application public id here",
-  "Spotify_ids" : "your spotify application secret id here" 
+  "Spotify_ids" : "your spotify application secret id here",
+  "Invite_link" : "your bot invite link here"
 }
