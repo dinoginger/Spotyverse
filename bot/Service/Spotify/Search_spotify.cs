@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Discord;
-using Microsoft.VisualBasic;
 using SpotifyAPI.Web;
-using Swan;
 
-namespace SpotifyBot.Spotify
+namespace Discord_API1.Service.Spotify
 {
     public partial class SpotifyService
     {
-        public static async Task<EmbedBuilder> Search(string requestString)
+        public async Task<EmbedBuilder> Search(string requestString)
         {
             string song_name;
             string album_name;

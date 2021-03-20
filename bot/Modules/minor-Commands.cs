@@ -6,8 +6,8 @@ using Discord;
 
 using Discord.Commands;
 using Discord.WebSocket;
+using Discord_API1.Service.Spotify;
 using SpotifyBot.Other;
-using SpotifyBot.Spotify;
 
 
 namespace SpotifyBot.Modules
@@ -35,35 +35,6 @@ namespace SpotifyBot.Modules
                               "\n``<<listen [minutes] [@mention]`` - Listens to custom user's Spotify activity");
             a.WithColor(Color.Magenta);
             await Context.Channel.SendMessageAsync("", false, a.Build());
-        }
-        
-
-        [Command("search")]
-        [MyRatelimit(3, 30,MyMeasure.Seconds)]
-        public async Task search([Remainder] string msg)
-        {
-            
-            if (msg != null)
-            {
-                Console.WriteLine("we in!");
-                try
-                {
-                    EmbedBuilder embedBuilerr = await SpotifyService.Search(msg);
-                    await Context.Channel.SendMessageAsync("", false, embedBuilerr.Build());
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("we messed up");
-                    throw;
-                }
-                
-
-            }
-            else
-            {
-                Console.WriteLine("msg is null");
-            }
-            
         }
     }
 }

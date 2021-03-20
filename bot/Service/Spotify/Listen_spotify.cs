@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using SpotifyAPI.Web;
 using Swan;
 
-namespace SpotifyBot.Spotify
+namespace Discord_API1.Service.Spotify
 {
     
     public partial class SpotifyService
@@ -26,14 +25,14 @@ namespace SpotifyBot.Spotify
             Bot_ids = data.Spotify_ids;
 
         }
-/// <summary>
+        /// <summary>
 /// This method is created for command !listen.
 /// Returns string with genres of songs artist and popularity score.
 /// </summary>
 /// <param name="songName"></param>
 /// <returns></returns>
 /// <exception cref="ArgumentException"></exception>
-        public static async Task<Tuple<int, string>> Listen(string songName)
+    public async Task<Tuple<int, string>> Listen(string songName)
         {
             
             GetSpotifyTokens();
@@ -81,7 +80,7 @@ namespace SpotifyBot.Spotify
 /// </summary>
 /// <param name="all_genres_string"></param>
 /// <returns></returns>
-        public static string GetTopGenres(string all_genres_string)
+        public string GetTopGenres(string all_genres_string)
         {
             if (all_genres_string == null)
             {

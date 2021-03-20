@@ -1,6 +1,7 @@
 ﻿using System;
 using Discord.Commands;
 using Discord.WebSocket;
+using Discord_API1.Service.Spotify;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -25,6 +26,7 @@ namespace SpotifyBot.Service
                 .AddSingleton<_CooldownFixer>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<LoggingService>()
+                .AddSingleton<SpotifyService>()
                 .AddLogging(configure => configure.AddSerilog()); //Registering ILogger to use in any other injected service element
 
             
