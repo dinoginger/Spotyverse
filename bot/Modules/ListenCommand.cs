@@ -5,7 +5,7 @@ using Discord;
 using Discord.Addons.Preconditions;
 using Discord.Commands;
 using Discord.WebSocket;
-using Discord_API1.Service.Spotify;
+using SpotifyBot.Service.Spotify;
 using Microsoft.Extensions.DependencyInjection;
 using SpotifyBot.Other;
 

@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
-using Discord_API1.Service.Spotify;
+using SpotifyBot.Service.Spotify;
 using Microsoft.Extensions.DependencyInjection;
 using SpotifyBot.Other;
 

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Discord;
 using SpotifyAPI.Web;
 
-namespace Discord_API1.Service.Spotify
+namespace SpotifyBot.Service.Spotify
 {
     public partial class SpotifyService
     {

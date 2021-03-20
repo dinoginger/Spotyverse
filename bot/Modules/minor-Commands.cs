@@ -1,13 +1,6 @@
-﻿using System;
-using System.Linq;
-
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Discord;
-
 using Discord.Commands;
-using Discord.WebSocket;
-using Discord_API1.Service.Spotify;
-using SpotifyBot.Other;
 
 
 namespace SpotifyBot.Modules
