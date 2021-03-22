@@ -122,7 +122,7 @@ namespace SpotifyBot.Modules
                 var field = new EmbedFieldBuilder();
                 
                 field.WithName($"How basic your music taste is, based on {popularities.Length} song(s) ");
-                field.WithValue($"Your playlist is `{Math.Round(popularities.Average(), 1)}%` basic.");
+                field.WithValue($"Your current songs are `{Math.Round(popularities.Average(), 1)}%` basic.");
                 field.IsInline = true;
                 
                 
@@ -130,7 +130,7 @@ namespace SpotifyBot.Modules
                 embedBuilder.WithAuthor($"for {user.Username}")
                     .WithCurrentTimestamp()
                     .WithColor(new Color(random.Next(0, 255), random.Next(0, 255), random.Next(0, 255)))
-                    .WithThumbnailUrl("https://p7.hiclipart.com/preview/833/349/159/spotify-logo-streaming-media-apple-music-others.jpg");
+                    .WithThumbnailUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/768px-Spotify_logo_without_text.svg.png");
                 if (topGenres.Length > 2)
                 {
                     var genre_field = new EmbedFieldBuilder();
