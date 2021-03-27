@@ -154,6 +154,7 @@ namespace SpotifyBot.Modules
                 return MyCommandResult.FromError($"Command aborted : {e.Message}");
             }
         }
+        
     }
 }
 

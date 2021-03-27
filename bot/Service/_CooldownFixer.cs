@@ -1,4 +1,8 @@
-﻿namespace SpotifyBot.Service
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace SpotifyBot.Service
 {
     /// <summary>
     /// This class will be later injected in our service.
@@ -7,7 +11,12 @@
     /// </summary>
     public class _CooldownFixer
     {
-        public bool wasSuccess;
+        //command name - list<user name, bool>
+        public Dictionary<string, Dictionary<string, bool>> ifFailed = new Dictionary<string, Dictionary<string, bool>>();
 
+        public _CooldownFixer()
+        {
+            ifFailed.Clear();
+        }
     }
 }
