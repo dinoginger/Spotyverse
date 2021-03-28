@@ -90,24 +90,33 @@ namespace SpotifyBot.Service
             
             
         }
-        public async Task HandleCommandAsync(SocketMessage msg)
+
+        public Task HandleCommandAsync(SocketMessage msg)
         {
-            
-            var message = msg as SocketUserMessage;
-            if (message.Author.IsBot)
+
+            _ = Task.Run(async () =>
             {
-                return;
+                var message = msg as SocketUserMessage;
+                if (message.Author.IsBot)
+                {
+                    return Task.CompletedTask;
+                }
+
+                if (message == null) return Task.CompletedTask;
+                int argPos = 0;
+                if (!((message.HasStringPrefix("<<", ref argPos) ||
+                       message.HasMentionPrefix(_client.CurrentUser, ref argPos))))
+                {
+                    return Task.CompletedTask;
+                }
+
+                var context = new SocketCommandContext(_client, message);
+                await _commands.ExecuteAsync(context, argPos, _services);
+                return Task.CompletedTask;
             }
-            if (message == null) return;
-            int argPos = 0;
-            if (!((message.HasStringPrefix("<<", ref argPos) || 
-                   message.HasMentionPrefix(_client.CurrentUser, ref argPos))))
-            {
-                return;
-            }
+            );
+            return Task.CompletedTask;
             
-            var context = new SocketCommandContext(_client, message);
-            await _commands.ExecuteAsync(context, argPos, _services);
         }
     }
     
