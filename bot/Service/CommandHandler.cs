@@ -60,22 +60,15 @@ namespace SpotifyBot.Service
                 //This is run for cooldown issue.
                 
                 var a = _services.GetService<_CooldownFixer>();
-                var user_dict = a.ifFailed[command.Value.Name];
-                if (user_dict == null)
-                {
-                    user_dict = new Dictionary<string, bool>();
-                    a.ifFailed.Add(command.Value.Name,user_dict);
-                    user_dict.Add(context.User.Username,true);
-                }
-                
-                
-                
-                a.ifFailed[command.Value.Name][context.User.Username] = true;
 
 
-                if (a.ifFailed[command.Value.Name].Count > 1000) //if thing is used by more than 1000 ppl
+
+                a.ifFailed[context.User.Username][command.Value.Name] = true;
+
+
+                if (a.ifFailed[context.User.Username].Count > 1000) //if thing is used by more than 1000 ppl
                 {
-                    a.ifFailed[command.Value.Name].Clear(); //clear
+                    a.ifFailed[context.User.Username].Clear(); //clear
                 }
                 
                 

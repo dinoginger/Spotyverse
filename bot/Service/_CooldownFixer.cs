@@ -11,7 +11,7 @@ namespace SpotifyBot.Service
     /// </summary>
     public class _CooldownFixer
     {
-        //command name - list<user name, bool>
+        //User name - list<command name, bool (suceeded or not)>
         public Dictionary<string, Dictionary<string, bool>> ifFailed = new Dictionary<string, Dictionary<string, bool>>();
 
         public _CooldownFixer()

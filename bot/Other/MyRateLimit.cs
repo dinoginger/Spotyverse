@@ -115,11 +115,17 @@ namespace SpotifyBot.Other
       
       //checking if this command exists
       //if not we create and setup first run as unsucessful (to skip and rely on command handler next time)
-      if (a.ifFailed == null || !(a.ifFailed.ContainsKey(_.Name)))
+      if (!(a.ifFailed.ContainsKey(context.User.Username)))
       {
         var user_dict = new Dictionary<string, bool>();
-        a.ifFailed.Add(_.Name,user_dict);
-        user_dict.Add(context.User.Username,true);
+        a.ifFailed.Add(context.User.Username,user_dict);
+        user_dict.Add(_.Name,true);
+      }
+
+      if (!(a.ifFailed[context.User.Username].ContainsKey(_.Name)))
+      {
+        a.ifFailed[context.User.Username].Add(_.Name,true);
+        
       }
 
 
@@ -131,19 +137,19 @@ namespace SpotifyBot.Other
       CommandTimeout commandTimeout1;
       CommandTimeout commandTimeout2 = !this._invokeTracker.TryGetValue(key, out commandTimeout1) || !(utcNow - commandTimeout1.FirstInvoke < this._invokeLimitPeriod) ? new CommandTimeout(utcNow) : commandTimeout1;
       ++commandTimeout2.TimesInvoked;
-      if (a.ifFailed[_.Name][context.User.Username])//if null wont enter
+      if (a.ifFailed[context.User.Username][_.Name])//if null wont enter
       {
         commandTimeout2.TimesInvoked -= 1;
       }
 
       if (commandTimeout2.TimesInvoked >= this._invokeLimit)
       {
-        a.ifFailed[_.Name][context.User.Username] = false;
+        a.ifFailed[context.User.Username][_.Name] = false;
         return Task.FromResult<PreconditionResult>(PreconditionResult.FromError(this.ErrorMessage ?? $"Sheesh.. :eyes: this command is on cooldown for `{(this._invokeLimitPeriod - (utcNow - commandTimeout2.FirstInvoke)).ToString(@"hh\:mm\:ss")}`"));
       }
 
       this._invokeTracker[key] = commandTimeout2;
-      a.ifFailed[_.Name][context.User.Username] = false;
+      a.ifFailed[context.User.Username][_.Name] = false;
       return Task.FromResult<PreconditionResult>(PreconditionResult.FromSuccess());
     }
 
