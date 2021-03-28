@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using Discord;
+using Discord.WebSocket;
 using SpotifyAPI.Web;
 
 namespace SpotifyBot.Service.Spotify
 {
     public partial class SpotifyService
     {
-        public async Task<EmbedBuilder> Search(string requestString)
+        private static SocketUser user;
+        public async Task<EmbedBuilder> Search(string requestString, SocketUser socketUser)
         {
             string song_name;
             string album_name;
             int popuarity;
 
+            user = socketUser;
             string artistname;
             string genres_string = "";
             EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -75,7 +79,13 @@ namespace SpotifyBot.Service.Spotify
                         {
 
                             //Building embed; 
-                            embedBuilder.WithTitle("Search results :");
+                            
+                            var footer = new EmbedFooterBuilder();
+                            footer.Text += $"for {user.Username}";
+                            footer.IconUrl += user.GetAvatarUrl();
+                            
+                            
+                            embedBuilder.WithFooter(footer);
 
                             //artist field
                             var Artist_field = new EmbedFieldBuilder();
@@ -130,7 +140,12 @@ namespace SpotifyBot.Service.Spotify
                     if (album.AlbumType != "single")
                     {
                         //Building embed; 
-                        embedBuilder.WithTitle("Search results :");
+                        var footer = new EmbedFooterBuilder();
+                        footer.Text += $"for {user.Username}";
+                        footer.IconUrl += user.GetAvatarUrl();
+                            
+                            
+                        embedBuilder.WithFooter(footer);
 
                         //album field
                         var Album_field = new EmbedFieldBuilder();
@@ -155,7 +170,12 @@ namespace SpotifyBot.Service.Spotify
                 {
                     var track = response.Tracks.Items[0];
                     
-                    embedBuilder.WithTitle("Search results :");
+                    var footer = new EmbedFooterBuilder();
+                    footer.Text += $"for {user.Username}";
+                    footer.IconUrl += user.GetAvatarUrl();
+                            
+                            
+                    embedBuilder.WithFooter(footer);
                     
                     
                     //album field

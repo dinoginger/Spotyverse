@@ -12,8 +12,12 @@ namespace SpotifyBot.Modules
         [Alias("inv")]
         public async Task invite()
         {
+            await Context.Channel.SendMessageAsync("Sent you a DM's :smile:");
             Discord.IDMChannel gencom = await Context.Message.Author.GetOrCreateDMChannelAsync();
-            await gencom.SendMessageAsync($"Here is my link invite : \n{Program.invite_link}", false);
+            var embed = new EmbedBuilder();
+            embed.Description += $"Invite the bot to your server by [this link]({Program.invite_link})";
+            embed.WithColor(new Color(125,164,120));
+            await gencom.SendMessageAsync("", false, embed.Build());
             await gencom.CloseAsync(); 
         }
 

@@ -25,7 +25,7 @@ namespace SpotifyBot.Modules
             Console.WriteLine("we in!"); 
             try 
             { 
-                EmbedBuilder embedBuilerr = await spotify.Search(msg); 
+                EmbedBuilder embedBuilerr = await spotify.Search(msg, Context.User); 
                 await Context.Channel.SendMessageAsync("", false, embedBuilerr.Build());
             }
             catch (Exception e)

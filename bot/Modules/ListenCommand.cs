@@ -125,9 +125,13 @@ namespace SpotifyBot.Modules
                 field.WithValue($"Your current songs are `{Math.Round(popularities.Average(), 1)}%` basic.");
                 field.IsInline = true;
                 
+
+                var author = new EmbedAuthorBuilder();
+                author.Name += $"for {user.Username}";
+                author.IconUrl += user.GetAvatarUrl();
                 
                 embedBuilder.AddField(field);
-                embedBuilder.WithAuthor($"for {user.Username}")
+                embedBuilder.WithAuthor(author)
                     .WithCurrentTimestamp()
                     .WithColor(new Color(random.Next(0, 255), random.Next(0, 255), random.Next(0, 255)))
                     .WithThumbnailUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/768px-Spotify_logo_without_text.svg.png");
