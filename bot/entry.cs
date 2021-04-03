@@ -34,7 +34,7 @@ namespace SpotifyBot
             The files will roll every day, and have each day’s date as a timestamp (Serilog takes care of this magic)
              */
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.File(@"C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\bot\logs\myk.log",rollingInterval: RollingInterval.Day) //New log file is created every day.
+                .WriteTo.File($@".\logs\-.log",rollingInterval: RollingInterval.Day) //New log file is created every day.
                 .WriteTo.Console()
                 .MinimumLevel.Information()
                 .CreateLogger();
@@ -47,7 +47,7 @@ namespace SpotifyBot
 
 
 
-        private readonly string configPath = @"C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\bot\_config.json";
+        private readonly string configPath = @".\_config.json";
         private string bot_token;
         public static string invite_link;
         

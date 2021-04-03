@@ -50,6 +50,8 @@ namespace SpotifyBot.Modules
                 user = Context.User;
             }
 
+            Random random = new Random();
+            Color color = new Color(random.Next(0, 255), random.Next(0, 255), random.Next(0, 255));
             try
             {
                 Console.Write(user.Username + "\n"); //test : see which user we listen to 
@@ -66,7 +68,10 @@ namespace SpotifyBot.Modules
                 int p = (int) (minutes * 60) / wait_seconds; //How many times loop will run
                 song_data[] songData = new song_data[p];
                 int d = 0;
-                await Context.Channel.SendMessageAsync("starting...");
+                var embed = new EmbedBuilder();
+                embed.Description += $"starting... \nListening for {minutes} minute(s)..";
+                embed.WithColor(color);
+                await Context.Channel.SendMessageAsync("", false, embed.Build());
                 for (int i = 0; i < p; i++)
                 {
                     bool Spotify_exists  = false; //To determine whether first activity check contains spotify 
@@ -118,7 +123,6 @@ namespace SpotifyBot.Modules
                 //Console.WriteLine($"\n\n{distinct_genres}"); - in case you wanna see it
 
                 var topGenres = spotify.GetTopGenres(distinct_genres);
-                Random random = new Random();
                 var field = new EmbedFieldBuilder();
                 
                 field.WithName($"How basic your music taste is, based on {popularities.Length} song(s) ");
@@ -133,7 +137,7 @@ namespace SpotifyBot.Modules
                 embedBuilder.AddField(field);
                 embedBuilder.WithAuthor(author)
                     .WithCurrentTimestamp()
-                    .WithColor(new Color(random.Next(0, 255), random.Next(0, 255), random.Next(0, 255)))
+                    .WithColor(color)
                     .WithThumbnailUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/768px-Spotify_logo_without_text.svg.png");
                 if (topGenres.Length > 2)
                 {

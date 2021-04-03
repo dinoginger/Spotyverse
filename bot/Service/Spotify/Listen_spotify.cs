@@ -14,7 +14,7 @@ namespace SpotifyBot.Service.Spotify
         private static string Bot_id;  //Id of my spotify app
         private static string Bot_ids; //secret Id 
 
-        private static readonly string configPath = @"C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\bot\_config.json";
+        private static readonly string configPath = @".\_config.json";
 
         private static void GetSpotifyTokens() //Method to get spotify tokens
         {
@@ -96,8 +96,7 @@ namespace SpotifyBot.Service.Spotify
             foreach (var word in genre_list){
                 Console.WriteLine("{0}x {1}", word.Count(), word.Key);
             }
-
-            //////НЕ ПРАЦЮЄЄЄЄЄЄЄЄЄЄЄЄЄЄЄЄЄЄ
+            
             int mm = 0;
             List<string> list = new List<string>();
             foreach (var genre in genre_list )
