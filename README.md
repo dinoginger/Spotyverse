@@ -1,5 +1,5 @@
 ## Status
-Undeployed, almost ready for 1st release
+Deployed, still needs some fixes
 # SpotifyBot_
 Analyses you music taste and provide information about songs and artists.
 
