@@ -20,6 +20,7 @@ Command (and syntax)| What it does
 3. Get tocken from Discord
 4. Paste the tokens in config file.
 
-
+## License
+This project is licensed under the terms of the [MIT](https://opensource.org/licenses/MIT) license.
 
 
