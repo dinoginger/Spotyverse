@@ -1,6 +1,6 @@
 ## Status
 Deployed, still needs some fixes
-# SpotifyBot_
+# Spotyverse
 Analyses your music taste and provides information about songs and artists.
 
 ## Usage
