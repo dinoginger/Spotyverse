@@ -1,7 +1,7 @@
 ## Status
 Deployed, still needs some fixes
 # SpotifyBot_
-Analyses you music taste and provide information about songs and artists.
+Analyses your music taste and provides information about songs and artists.
 
 ## Usage
 Prefix for commands is _"<<"_.
