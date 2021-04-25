@@ -17,7 +17,7 @@ Command (and syntax)| What it does
 ## Instalation
 1. You need to create your Spotify application
 2. Get tokens for Spotify service from [here](https://developer.spotify.com/dashboard/applications).
-3. Get tocken from Discord
+3. Get token from Discord
 4. Paste the tokens in config file.
 
 ## License
