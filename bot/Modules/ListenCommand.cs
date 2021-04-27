@@ -81,14 +81,14 @@ namespace SpotifyBot.Modules
                         if (activity is SpotifyGame spot)
                         {
                             Spotify_exists = true;
-                            Console.WriteLine($"{d + 1} song recieved");
+                            //Console.WriteLine($"{d + 1} song recieved");
                             var tuple = spotify.Listen(spot.TrackTitle + " " + spot.Artists.First());
                             songData[d].popularity = tuple.Result.Item1;
                             songData[d].genre_string = tuple.Result.Item2;
 
                             songData[d].songname = spot.TrackTitle;
-                            Console.WriteLine(spot.TrackTitle);
-                            Console.WriteLine(songData[d].genre_string);
+                            //Console.WriteLine(spot.TrackTitle);
+                            //Console.WriteLine(songData[d].genre_string);
                             d++;
                         }
                     }
@@ -113,8 +113,8 @@ namespace SpotifyBot.Modules
                 string distinct_genres = "";
                 foreach (var data in distinct_data)
                 {
-                    Console.WriteLine(data.songname);
-                    Console.WriteLine(data.genre_string);
+                    //Console.WriteLine(data.songname);
+                    //Console.WriteLine(data.genre_string);
                     popularities[dd] = data.popularity;
                     dd++;
                     distinct_genres = distinct_genres + "+" + data.genre_string;//all genres to one string, in order to pass it to GetTopGenres();

@@ -142,7 +142,7 @@ namespace SpotifyBot.Other
         commandTimeout2.TimesInvoked -= 1;
       }
 
-      if (commandTimeout2.TimesInvoked >= this._invokeLimit)
+      if (commandTimeout2.TimesInvoked >= this._invokeLimit && (((this._invokeLimitPeriod - (utcNow - commandTimeout2.FirstInvoke) != this._invokeLimitPeriod))))
       {
         a.ifFailed[context.User.Username][_.Name] = false;
         return Task.FromResult<PreconditionResult>(PreconditionResult.FromError(this.ErrorMessage ?? $"Sheesh.. :eyes: this command is on cooldown for `{(this._invokeLimitPeriod - (utcNow - commandTimeout2.FirstInvoke)).ToString(@"hh\:mm\:ss")}`"));

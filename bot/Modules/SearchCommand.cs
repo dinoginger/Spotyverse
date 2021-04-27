@@ -10,10 +10,10 @@ namespace SpotifyBot.Modules
 {
     public class SearchCommand : ModuleBase<SocketCommandContext>
     {
-        private SpotifyService spotify;
+        private SpotifyService spotifyService;
         public SearchCommand(IServiceProvider serviceProvider)
         {
-            spotify = serviceProvider.GetRequiredService<SpotifyService>();
+            spotifyService = serviceProvider.GetRequiredService<SpotifyService>();
         }
         
         
@@ -25,15 +25,15 @@ namespace SpotifyBot.Modules
             Console.WriteLine("we in!"); 
             try 
             { 
-                EmbedBuilder embedBuilerr = await spotify.Search(msg, Context.User); 
+                EmbedBuilder embedBuilerr = await spotifyService.Search(msg, Context.User);
                 await Context.Channel.SendMessageAsync("", false, embedBuilerr.Build());
+                return MyCommandResult.FromSuccess();
             }
             catch (Exception e)
             {
                 Console.WriteLine("we messed up");
                 return MyCommandResult.FromError(e.Message);
             }
-            return MyCommandResult.FromSuccess();
         }
     }
 }

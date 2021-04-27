@@ -93,9 +93,9 @@ namespace SpotifyBot.Service.Spotify
                 .GroupBy(w => w)
                 .OrderByDescending(g => g.Count());
 
-            foreach (var word in genre_list){
+            /*foreach (var word in genre_list){
                 Console.WriteLine("{0}x {1}", word.Count(), word.Key);
-            }
+            }*/
             
             int mm = 0;
             List<string> list = new List<string>();

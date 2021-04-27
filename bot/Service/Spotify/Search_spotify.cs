@@ -4,13 +4,16 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
+using Microsoft.Extensions.Logging;
 using SpotifyAPI.Web;
 
 namespace SpotifyBot.Service.Spotify
 {
     public partial class SpotifyService
     {
+        
         private static SocketUser user;
+        private SpotifyClient spotify;
         public async Task<EmbedBuilder> Search(string requestString, SocketUser socketUser)
         {
             string song_name;
@@ -24,28 +27,41 @@ namespace SpotifyBot.Service.Spotify
 
             //Getting tokens from our json.
             GetSpotifyTokens();
-
-            //Connection of Bot client
-            var config = SpotifyClientConfig.CreateDefault();
-            var request =
-                new ClientCredentialsRequest(Bot_id, Bot_ids);
-            var response = await new OAuthClient(config).RequestToken(request);
-            var spotify = new SpotifyClient(config.WithToken(response.AccessToken));
-            // --- 
             try
             {
-                SearchRequest searchRequest = new SearchRequest(SearchRequest.Types.All,
-                    requestString);
-                searchRequest.Limit = 5;
-                var result = await spotify.Search.Item(searchRequest); //Sending search request and obtaining data obj
-                EmbedBuilder embed = EmbedCreator(result, spotify);
+                //Connection of Bot client
+                var config = SpotifyClientConfig
+                    .CreateDefault()
+                    .WithAuthenticator(new ClientCredentialsAuthenticator(Bot_id, Bot_ids));
+                spotify = new SpotifyClient(config);
+            }
+            catch (APIUnauthorizedException e)
+            {
+                Console.Write("problem api unathor");
+                Console.Write("UNATHORIZED"+ e.Message + "with : " + e.Response?.StatusCode);
+                throw new ApplicationException(e.Message + "with : " + e.Response?.StatusCode);
+            }
+
+
+            try
+            {
+                var result = spotify.Search.Item(new SearchRequest(SearchRequest.Types.All,requestString)); //Sending search request and obtaining data obj
+                EmbedBuilder embed = EmbedCreator(result.Result, spotify);
                 if (embed == null)
                 {
-                    throw new ArgumentException("");
+                    throw new ArgumentException("Embed is zero");
                 }
-                return embed;
-                
 
+                return embed;
+
+
+            }
+            catch (APIException e)
+            {
+                Console.Write("problem api excep");
+                Console.Write("api excheption"+ e.Message + "with : " + e.Response?.StatusCode);
+                throw new ApplicationException(e.Message + "with : " + e.Response?.StatusCode);
+                
             }
             catch (Exception e)
             {
