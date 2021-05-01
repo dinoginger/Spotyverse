@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
@@ -8,7 +10,8 @@ using Discord.WebSocket;
 using SpotifyBot.Service.Spotify;
 using Microsoft.Extensions.DependencyInjection;
 using SpotifyBot.Other;
-
+using SpotifyBot.Service.ForCooldown;
+using Swan;
 
 
 namespace SpotifyBot.Modules
@@ -28,10 +31,14 @@ namespace SpotifyBot.Modules
         private const int wait_seconds = 30; //--seconds \\\\\Period of time we wait before checking song again
 
         private SpotifyService spotify;
+        private ListenUsersList _listenUsersList;
+        private Dictionary<ulong, Tuple<TimeSpan,DateTime>> _dictionary;
 
         public ListenCommand(IServiceProvider serviceProvider)
         {
             spotify = serviceProvider.GetRequiredService<SpotifyService>();
+            _listenUsersList = serviceProvider.GetRequiredService<ListenUsersList>();
+            _dictionary= _listenUsersList._UsrDict;
         }
         
         /// <summary>
@@ -42,13 +49,25 @@ namespace SpotifyBot.Modules
         /// <returns></returns>
 
         [Command("listen", RunMode = RunMode.Async)]
-        [MyRatelimit(1,command_cooldown,MyMeasure.Minutes, RatelimitFlags.None)]
         public async Task<RuntimeResult> Listenn(float minutes,SocketUser user = null)
         {
             if (user == null)
             {
                 user = Context.User;
             }
+
+            DateTime utcNow = DateTime.UtcNow;
+            if (_dictionary.ContainsKey(user.Id))
+            {
+                return MyCommandResult.FromError($"Shhh... :eyes: 'Listen' is already running for user {user.Mention}!\nEstimated end time : `{(_dictionary[user.Id].Item1 - (utcNow - _dictionary[user.Id].Item2) ).ToString(@"hh\:mm\:ss")}`");
+            }
+            else
+            {
+                Console.WriteLine("adding....");
+                TimeSpan span = TimeSpan.FromMinutes(minutes); // converting float minutes to timespan minutes
+                _dictionary.Add(user.Id, new Tuple<TimeSpan, DateTime>(span, utcNow)); //filling dict
+            }
+
 
             Random random = new Random();
             Color color = new Color(random.Next(0, 255), random.Next(0, 255), random.Next(0, 255));
@@ -153,16 +172,24 @@ namespace SpotifyBot.Modules
                     embedBuilder.AddField(genre_field);
                 }
 
+                RemoveUser(user,_dictionary);
                 await Context.Channel.SendMessageAsync("", false, embedBuilder.Build());
                 return MyCommandResult.FromSuccess();
             }
             catch (Exception e)
             {
 
+                RemoveUser(user, _dictionary);
                 return MyCommandResult.FromError($"Command aborted : {e.Message}");
             }
         }
-        
+
+        //Removes element from dict, thats all
+        private void RemoveUser(SocketUser user, Dictionary<ulong, Tuple<TimeSpan,DateTime>> _dict)
+        {
+            Console.WriteLine("deleting,,,");
+            _dict.Remove(user.Id);
+        }
     }
 }
 

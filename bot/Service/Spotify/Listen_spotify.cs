@@ -11,27 +11,14 @@ namespace SpotifyBot.Service.Spotify
     
     public partial class SpotifyService
     {
-        private static string Bot_id;  //Id of my spotify app
-        private static string Bot_ids; //secret Id 
-
-        private static readonly string configPath = @".\_config.json";
-
-        private static void GetSpotifyTokens() //Method to get spotify tokens
-        {
-            StreamReader r = new StreamReader(configPath);
-            string json = r.ReadToEnd();
-            dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
-            Bot_id = data.Spotify_id;
-            Bot_ids = data.Spotify_ids;
-
-        }
+        
         /// <summary>
-/// This method is created for command !listen.
-/// Returns string with genres of songs artist and popularity score.
-/// </summary>
-/// <param name="songName"></param>
-/// <returns></returns>
-/// <exception cref="ArgumentException"></exception>
+    /// This method is created for command !listen.
+    /// Returns string with genres of songs artist and popularity score.
+    /// </summary>
+    /// <param name="songName"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public async Task<Tuple<int, string>> Listen(string songName)
         {
             

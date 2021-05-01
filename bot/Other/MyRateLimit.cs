@@ -6,6 +6,7 @@ using Discord.Addons.Preconditions;
 using Discord.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using SpotifyBot.Service;
+using SpotifyBot.Service.ForCooldown;
 
 namespace SpotifyBot.Other
 {
@@ -111,22 +112,7 @@ namespace SpotifyBot.Other
       CommandInfo _,
       IServiceProvider __)
     {
-      var a = __.GetService<_CooldownFixer>();
-      
-      //checking if this command exists
-      //if not we create and setup first run as unsucessful (to skip and rely on command handler next time)
-      if (!(a.ifFailed.ContainsKey(context.User.Username)))
-      {
-        var user_dict = new Dictionary<string, bool>();
-        a.ifFailed.Add(context.User.Username,user_dict);
-        user_dict.Add(_.Name,true);
-      }
 
-      if (!(a.ifFailed[context.User.Username].ContainsKey(_.Name)))
-      {
-        a.ifFailed[context.User.Username].Add(_.Name,true);
-        
-      }
 
 
       if (this._noLimitInDMs && context.Channel is IPrivateChannel)
@@ -137,19 +123,13 @@ namespace SpotifyBot.Other
       CommandTimeout commandTimeout1;
       CommandTimeout commandTimeout2 = !this._invokeTracker.TryGetValue(key, out commandTimeout1) || !(utcNow - commandTimeout1.FirstInvoke < this._invokeLimitPeriod) ? new CommandTimeout(utcNow) : commandTimeout1;
       ++commandTimeout2.TimesInvoked;
-      if (a.ifFailed[context.User.Username][_.Name])//if null wont enter
-      {
-        commandTimeout2.TimesInvoked -= 1;
-      }
 
       if (commandTimeout2.TimesInvoked >= this._invokeLimit && (((this._invokeLimitPeriod - (utcNow - commandTimeout2.FirstInvoke) != this._invokeLimitPeriod))))
       {
-        a.ifFailed[context.User.Username][_.Name] = false;
         return Task.FromResult<PreconditionResult>(PreconditionResult.FromError(this.ErrorMessage ?? $"Sheesh.. :eyes: this command is on cooldown for `{(this._invokeLimitPeriod - (utcNow - commandTimeout2.FirstInvoke)).ToString(@"hh\:mm\:ss")}`"));
       }
 
       this._invokeTracker[key] = commandTimeout2;
-      a.ifFailed[context.User.Username][_.Name] = false;
       return Task.FromResult<PreconditionResult>(PreconditionResult.FromSuccess());
     }
 
