@@ -15,10 +15,11 @@ namespace SpotifyBot.Service.Spotify
         private static string Bot_ids; //secret Id 
 
         private static readonly string configPath = @".\_config.json";
+        private static readonly string t_configPath = @"C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\bot\t_config.json";
 
         private static void GetSpotifyTokens() //Method to get spotify tokens
         {
-            StreamReader r = new StreamReader(configPath);
+            StreamReader r = new StreamReader(t_configPath);
             string json = r.ReadToEnd();
             dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
             Bot_id = data.Spotify_id;

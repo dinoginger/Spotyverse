@@ -10,6 +10,11 @@ bin/
 
 #config file
 /bot/_config.json
+/bot/t_config.json
 
 #log files
 /bot/logs/
+
+#Solution file
+TestBot_.sln
+
