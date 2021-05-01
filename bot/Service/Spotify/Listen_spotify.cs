@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using SpotifyAPI.Web;
@@ -11,28 +10,19 @@ namespace SpotifyBot.Service.Spotify
     
     public partial class SpotifyService
     {
-        private static string Bot_id;  //Id of my spotify app
-        private static string Bot_ids; //secret Id 
-
-        private static readonly string configPath = @".\_config.json";
-
-        private static void GetSpotifyTokens() //Method to get spotify tokens
-        {
-            StreamReader r = new StreamReader(configPath);
-            string json = r.ReadToEnd();
-            dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
-            Bot_id = data.Spotify_id;
-            Bot_ids = data.Spotify_ids;
-
-        }
+        
         /// <summary>
-/// This method is created for command !listen.
-/// Returns string with genres of songs artist and popularity score.
-/// </summary>
-/// <param name="songName"></param>
-/// <returns></returns>
-/// <exception cref="ArgumentException"></exception>
-    public async Task<Tuple<int, string>> Listen(string songName)
+    /// This method is created for command !listen.
+    /// Returns string with genres of songs artist and popularity score.
+    /// </summary>
+    /// <param name="songName"></param>
+    /// <returns>
+    ///first int = song popularity
+    /// second int = artist popularity
+    /// string = top 3 genres
+    /// </returns>
+    /// <exception cref="ArgumentException"></exception>
+    public async Task<Tuple<int,int, string>> Listen(string songName)
         {
             
             GetSpotifyTokens();
@@ -47,24 +37,22 @@ namespace SpotifyBot.Service.Spotify
             try
             {
                 var result = await spotify.Search.Item(new SearchRequest(SearchRequest.Types.All, songName)); //Sending search request and creating json
-            
-            string data_json = result.Tracks.ToJson();
+                string data_json = result.Tracks.ToJson();
             
             dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(data_json);
             
-            var popularity = data.Items[0].Popularity; //популярність треку
+            var s_popularity = data.Items[0].Popularity; //популярність треку
             
-            //GenreSearch
+            //GenreSearch + artist popularity
             string artistid = data.Items[0].Album.Artists[0].Id.ToString();
-            var artist = await spotify.Artists.Get(artistid); 
-            var artistname = data.Items[0].Artists[0].Name.ToString(); 
+            var artist = await spotify.Artists.Get(artistid);
+            int a_popularity = artist.Popularity;
             string genres_string = "";
             foreach (var genre in artist.Genres.ToArray())
             {
                 genres_string = genres_string + "+" + genre;
             }
-            
-            return Tuple.Create((int)popularity,genres_string);
+            return Tuple.Create((int)s_popularity,(int)a_popularity,genres_string);
             
             }
             catch (Exception e)
@@ -72,6 +60,7 @@ namespace SpotifyBot.Service.Spotify
                 throw new ArgumentException($"Song \"{songName}\" was not found.");
                 
             }
+            
 
         }
 
@@ -93,9 +82,9 @@ namespace SpotifyBot.Service.Spotify
                 .GroupBy(w => w)
                 .OrderByDescending(g => g.Count());
 
-            foreach (var word in genre_list){
+            /*foreach (var word in genre_list){
                 Console.WriteLine("{0}x {1}", word.Count(), word.Key);
-            }
+            }*/
             
             int mm = 0;
             List<string> list = new List<string>();
@@ -112,5 +101,6 @@ namespace SpotifyBot.Service.Spotify
             return topgenres;
             
         }
+
     }
 }

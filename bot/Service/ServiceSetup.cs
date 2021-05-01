@@ -5,14 +5,14 @@ using SpotifyBot.Service.Spotify;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using SpotifyBot.Service.ForCooldown;
 
 namespace SpotifyBot.Service
 {
     public class service
     {
         private readonly DiscordSocketClient _client;
-        private _CooldownFixer _cooldownFixer = new _CooldownFixer();
-
+        
         public static ServiceProvider BuildServiceProvider()
         {
             var services = new ServiceCollection()
@@ -23,7 +23,7 @@ namespace SpotifyBot.Service
                         IgnoreExtraArgs = true,
                         CaseSensitiveCommands = false,
                     }))
-                .AddSingleton<_CooldownFixer>()
+                .AddSingleton<ListenUsersList>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<LoggingService>()
                 .AddSingleton<SpotifyService>()

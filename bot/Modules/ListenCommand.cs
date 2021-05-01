@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
@@ -8,7 +10,8 @@ using Discord.WebSocket;
 using SpotifyBot.Service.Spotify;
 using Microsoft.Extensions.DependencyInjection;
 using SpotifyBot.Other;
-
+using SpotifyBot.Service.ForCooldown;
+using Swan;
 
 
 namespace SpotifyBot.Modules
@@ -17,21 +20,22 @@ namespace SpotifyBot.Modules
     {
         private struct song_data
         {
-            public string songname;
-            public int popularity;
+            public int s_popularity;
+            public int a_popularity;
             public string genre_string;
         }
-
-        ///Default value of minutes command !listen runs, if not overloaded with minutes parameter
-        private const int command_cooldown = 5; //--minutes \\\\Determines cooldown for our listen command;
-
+        
         private const int wait_seconds = 30; //--seconds \\\\\Period of time we wait before checking song again
 
         private SpotifyService spotify;
+        private ListenUsersList _listenUsersList;
+        private Dictionary<ulong, Tuple<TimeSpan,DateTime>> _dictionary;
 
         public ListenCommand(IServiceProvider serviceProvider)
         {
             spotify = serviceProvider.GetRequiredService<SpotifyService>();
+            _listenUsersList = serviceProvider.GetRequiredService<ListenUsersList>();
+            _dictionary= _listenUsersList._UsrDict;
         }
         
         /// <summary>
@@ -42,13 +46,24 @@ namespace SpotifyBot.Modules
         /// <returns></returns>
 
         [Command("listen", RunMode = RunMode.Async)]
-        [MyRatelimit(1,command_cooldown,MyMeasure.Minutes, RatelimitFlags.None)]
         public async Task<RuntimeResult> Listenn(float minutes,SocketUser user = null)
         {
             if (user == null)
             {
                 user = Context.User;
             }
+
+            DateTime utcNow = DateTime.UtcNow;
+            if (_dictionary.ContainsKey(user.Id))
+            {
+                return MyCommandResult.FromError($"Shhh... :eyes: 'Listen' is already running for user {user.Mention}!\nEstimated end time : `{(_dictionary[user.Id].Item1 - (utcNow - _dictionary[user.Id].Item2) ).ToString(@"hh\:mm\:ss")}`");
+            }
+            else
+            {
+                TimeSpan span = TimeSpan.FromMinutes(minutes); // converting float minutes to timespan minutes
+                _dictionary.Add(user.Id, new Tuple<TimeSpan, DateTime>(span, utcNow)); //filling dict
+            }
+
 
             Random random = new Random();
             Color color = new Color(random.Next(0, 255), random.Next(0, 255), random.Next(0, 255));
@@ -81,14 +96,13 @@ namespace SpotifyBot.Modules
                         if (activity is SpotifyGame spot)
                         {
                             Spotify_exists = true;
-                            Console.WriteLine($"{d + 1} song recieved");
+                            //Console.WriteLine($"{d + 1} song recieved");
                             var tuple = spotify.Listen(spot.TrackTitle + " " + spot.Artists.First());
-                            songData[d].popularity = tuple.Result.Item1;
-                            songData[d].genre_string = tuple.Result.Item2;
-
-                            songData[d].songname = spot.TrackTitle;
-                            Console.WriteLine(spot.TrackTitle);
-                            Console.WriteLine(songData[d].genre_string);
+                            songData[d].s_popularity = tuple.Result.Item1; // <- song pop
+                            songData[d].a_popularity = tuple.Result.Item2; // <- artist pop
+                            songData[d].genre_string = tuple.Result.Item3;
+                            //Console.WriteLine(spot.TrackTitle);
+                            //Console.WriteLine(songData[d].genre_string);
                             d++;
                         }
                     }
@@ -108,14 +122,14 @@ namespace SpotifyBot.Modules
                 //Console.WriteLine("\n\n");
 
                 var distinct_data = songData.Distinct(); //Deletes similar elements.
-                int[] popularities = new int[distinct_data.Count()];
+                float[] popularities = new float[distinct_data.Count()];// song popularities
                 int dd = 0;
                 string distinct_genres = "";
                 foreach (var data in distinct_data)
                 {
-                    Console.WriteLine(data.songname);
-                    Console.WriteLine(data.genre_string);
-                    popularities[dd] = data.popularity;
+                    //Console.WriteLine(data.songname);
+                    //Console.WriteLine(data.genre_string);
+                    popularities[dd] = (data.s_popularity*0.25f + data.a_popularity*0.75f);
                     dd++;
                     distinct_genres = distinct_genres + "+" + data.genre_string;//all genres to one string, in order to pass it to GetTopGenres();
                 }
@@ -153,16 +167,23 @@ namespace SpotifyBot.Modules
                     embedBuilder.AddField(genre_field);
                 }
 
-                await Context.Channel.SendMessageAsync("", false, embedBuilder.Build());
+                RemoveUser(user,_dictionary);
+                await Context.Channel.SendMessageAsync(user.Mention, false, embedBuilder.Build());
                 return MyCommandResult.FromSuccess();
             }
             catch (Exception e)
             {
 
+                RemoveUser(user, _dictionary);
                 return MyCommandResult.FromError($"Command aborted : {e.Message}");
             }
         }
-        
+
+        //Removes element from dict, thats all
+        private void RemoveUser(SocketUser user, Dictionary<ulong, Tuple<TimeSpan,DateTime>> _dict)
+        {
+            _dict.Remove(user.Id);
+        }
     }
 }
 

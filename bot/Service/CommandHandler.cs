@@ -8,6 +8,7 @@ using Discord.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SpotifyBot.Other;
+using SpotifyBot.Service.ForCooldown;
 
 
 namespace SpotifyBot.Service
@@ -51,27 +52,16 @@ namespace SpotifyBot.Service
                 {
                     if (result.Error != CommandError.UnknownCommand)
                     {
-                        await context.Channel.SendMessageAsync(result.ErrorReason);
+                        EmbedBuilder embed = new EmbedBuilder();
+                        embed.WithDescription(result.ErrorReason);
+                        embed.Color = Color.Red;
+                        await context.Channel.SendMessageAsync("", false, embed.Build());
                     }
                     
                 }
-
                 
-                //This is run for cooldown issue.
-                
-                var a = _services.GetService<_CooldownFixer>();
 
 
-
-                a.ifFailed[context.User.Username][command.Value.Name] = true;
-
-
-                if (a.ifFailed[context.User.Username].Count > 1000) //if thing is used by more than 1000 ppl
-                {
-                    a.ifFailed[context.User.Username].Clear(); //clear
-                }
-                
-                
                 var commandName = command.IsSpecified ? command.Value.Name : "A command";
                 if (result.Error != CommandError.UnmetPrecondition && result.Error != CommandError.UnknownCommand) //Ignore ratelimits, they will occur a lot.
                 {

@@ -11,18 +11,24 @@ namespace SpotifyBot.Other
     public class UserErrorResponses
     {
         private const string listen_response =
-            "Hey, this commands input parameters are `<<listen [minutes]` or `<<listen [minutes] [@mention]`";
+            " :robot: Hey, this command's input parameters are `<<listen [minutes]` or `<<listen [minutes] [@mention]`\nFor full command list type `<<help`";
 
-        private const string search_response = "Hey, this commands input parameter is `<<search <search request>`";
+        private const string search_response = " :robot: Hey, this command's input parameter is `<<search [search request]`\nFor full command list type `<<help`";
         public static async Task BadArg_Parse_Response(Optional<CommandInfo> command, ICommandContext context)
         {
             if (command.Value.Name == "listen")
             {
-                await context.Channel.SendMessageAsync(listen_response);
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.WithDescription(listen_response);
+                embed.Color = Color.Gold;
+                await context.Channel.SendMessageAsync("", false, embed.Build());
             }
             else if (command.Value.Name == "search")
             {
-                await context.Channel.SendMessageAsync(search_response);
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.WithDescription(search_response);
+                embed.Color = Color.Gold;
+                await context.Channel.SendMessageAsync("", false, embed.Build());
             }
         }
     }
