@@ -24,10 +24,7 @@ namespace SpotifyBot.Modules
             public int popularity;
             public string genre_string;
         }
-
-        ///Default value of minutes command !listen runs, if not overloaded with minutes parameter
-        private const int command_cooldown = 5; //--minutes \\\\Determines cooldown for our listen command;
-
+        
         private const int wait_seconds = 30; //--seconds \\\\\Period of time we wait before checking song again
 
         private SpotifyService spotify;
@@ -63,7 +60,6 @@ namespace SpotifyBot.Modules
             }
             else
             {
-                Console.WriteLine("adding....");
                 TimeSpan span = TimeSpan.FromMinutes(minutes); // converting float minutes to timespan minutes
                 _dictionary.Add(user.Id, new Tuple<TimeSpan, DateTime>(span, utcNow)); //filling dict
             }
@@ -187,7 +183,6 @@ namespace SpotifyBot.Modules
         //Removes element from dict, thats all
         private void RemoveUser(SocketUser user, Dictionary<ulong, Tuple<TimeSpan,DateTime>> _dict)
         {
-            Console.WriteLine("deleting,,,");
             _dict.Remove(user.Id);
         }
     }
