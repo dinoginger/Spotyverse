@@ -48,8 +48,6 @@ namespace SpotifyBot
 
 
         private readonly string configPath = @".\_config.json";
-        private readonly string t_configPath = @"C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\bot\t_config.json";
-        
         private string bot_token;
         public static string invite_link;
         
@@ -84,7 +82,7 @@ namespace SpotifyBot
 
         private string GetToken()
         {
-            StreamReader r = new StreamReader(t_configPath);
+            StreamReader r = new StreamReader(configPath);
             string json = r.ReadToEnd();
             dynamic config_file = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
             invite_link = config_file.Invite_link;
