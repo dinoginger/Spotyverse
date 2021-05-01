@@ -13,7 +13,7 @@ namespace SpotifyBot.Service.Spotify
 
         private static void GetSpotifyTokens() //Method to get spotify tokens
         {
-            StreamReader r = new StreamReader(t_configPath);
+            StreamReader r = new StreamReader(configPath);
             string json = r.ReadToEnd();
             dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
             Bot_id = data.Spotify_id;

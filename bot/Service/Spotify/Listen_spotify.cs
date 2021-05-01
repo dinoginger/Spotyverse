@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using SpotifyAPI.Web;
@@ -17,9 +16,13 @@ namespace SpotifyBot.Service.Spotify
     /// Returns string with genres of songs artist and popularity score.
     /// </summary>
     /// <param name="songName"></param>
-    /// <returns></returns>
+    /// <returns>
+    ///first int = song popularity
+    /// second int = artist popularity
+    /// string = top 3 genres
+    /// </returns>
     /// <exception cref="ArgumentException"></exception>
-    public async Task<Tuple<int, string>> Listen(string songName)
+    public async Task<Tuple<int,int, string>> Listen(string songName)
         {
             
             GetSpotifyTokens();
@@ -34,24 +37,22 @@ namespace SpotifyBot.Service.Spotify
             try
             {
                 var result = await spotify.Search.Item(new SearchRequest(SearchRequest.Types.All, songName)); //Sending search request and creating json
-            
-            string data_json = result.Tracks.ToJson();
+                string data_json = result.Tracks.ToJson();
             
             dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(data_json);
             
-            var popularity = data.Items[0].Popularity; //популярність треку
+            var s_popularity = data.Items[0].Popularity; //популярність треку
             
-            //GenreSearch
+            //GenreSearch + artist popularity
             string artistid = data.Items[0].Album.Artists[0].Id.ToString();
-            var artist = await spotify.Artists.Get(artistid); 
-            var artistname = data.Items[0].Artists[0].Name.ToString(); 
+            var artist = await spotify.Artists.Get(artistid);
+            int a_popularity = artist.Popularity;
             string genres_string = "";
             foreach (var genre in artist.Genres.ToArray())
             {
                 genres_string = genres_string + "+" + genre;
             }
-            
-            return Tuple.Create((int)popularity,genres_string);
+            return Tuple.Create((int)s_popularity,(int)a_popularity,genres_string);
             
             }
             catch (Exception e)
@@ -59,6 +60,7 @@ namespace SpotifyBot.Service.Spotify
                 throw new ArgumentException($"Song \"{songName}\" was not found.");
                 
             }
+            
 
         }
 
@@ -99,5 +101,6 @@ namespace SpotifyBot.Service.Spotify
             return topgenres;
             
         }
+
     }
 }

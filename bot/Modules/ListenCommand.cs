@@ -20,8 +20,8 @@ namespace SpotifyBot.Modules
     {
         private struct song_data
         {
-            public string songname;
-            public int popularity;
+            public int s_popularity;
+            public int a_popularity;
             public string genre_string;
         }
         
@@ -98,10 +98,9 @@ namespace SpotifyBot.Modules
                             Spotify_exists = true;
                             //Console.WriteLine($"{d + 1} song recieved");
                             var tuple = spotify.Listen(spot.TrackTitle + " " + spot.Artists.First());
-                            songData[d].popularity = tuple.Result.Item1;
-                            songData[d].genre_string = tuple.Result.Item2;
-
-                            songData[d].songname = spot.TrackTitle;
+                            songData[d].s_popularity = tuple.Result.Item1; // <- song pop
+                            songData[d].a_popularity = tuple.Result.Item2; // <- artist pop
+                            songData[d].genre_string = tuple.Result.Item3;
                             //Console.WriteLine(spot.TrackTitle);
                             //Console.WriteLine(songData[d].genre_string);
                             d++;
@@ -123,14 +122,14 @@ namespace SpotifyBot.Modules
                 //Console.WriteLine("\n\n");
 
                 var distinct_data = songData.Distinct(); //Deletes similar elements.
-                int[] popularities = new int[distinct_data.Count()];
+                float[] popularities = new float[distinct_data.Count()];// song popularities
                 int dd = 0;
                 string distinct_genres = "";
                 foreach (var data in distinct_data)
                 {
                     //Console.WriteLine(data.songname);
                     //Console.WriteLine(data.genre_string);
-                    popularities[dd] = data.popularity;
+                    popularities[dd] = (data.s_popularity*0.25f + data.a_popularity*0.75f);
                     dd++;
                     distinct_genres = distinct_genres + "+" + data.genre_string;//all genres to one string, in order to pass it to GetTopGenres();
                 }
@@ -169,7 +168,7 @@ namespace SpotifyBot.Modules
                 }
 
                 RemoveUser(user,_dictionary);
-                await Context.Channel.SendMessageAsync("", false, embedBuilder.Build());
+                await Context.Channel.SendMessageAsync(user.Mention, false, embedBuilder.Build());
                 return MyCommandResult.FromSuccess();
             }
             catch (Exception e)
