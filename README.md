@@ -1,5 +1,5 @@
 ## Status
-Deployed, still needs some fixes
+Online, unaproved (Current server limit 250)
 # Spotyverse
 Analyses your music taste and provides information about songs and artists.
 
