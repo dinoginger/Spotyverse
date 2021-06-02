@@ -24,7 +24,8 @@ namespace SpotifyBot.Modules
             public int a_popularity;
             public string genre_string;
         }
-        
+
+        private const string spotify_activity_Explanation = "https://top.gg/bot/802544166860095489#spotify";
         private const int wait_seconds = 30; //--seconds \\\\\Period of time we wait before checking song again
 
         private SpotifyService spotify;
@@ -109,7 +110,7 @@ namespace SpotifyBot.Modules
 
                     if (!Spotify_exists && i == 0)
                     {
-                        throw new Exception("No spotify activity detected.");
+                        throw new Exception($"No spotify activity detected.\n[What is spotify activity?]({spotify_activity_Explanation}) :confused:");
                     }
 
                     if (i != p - 1) //For not delaying after last time
