@@ -1,5 +1,5 @@
 ## Status
-Online, unaproved (Current server limit 250)
+Online, waiting for verification
 # Spotyverse
 Analyses your music taste and provides information about songs and artists.
 
