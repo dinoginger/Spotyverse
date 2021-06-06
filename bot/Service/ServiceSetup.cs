@@ -12,9 +12,10 @@ namespace SpotifyBot.Service
     public class service
     {
         private readonly DiscordSocketClient _client;
-        
+
         public static ServiceProvider BuildServiceProvider()
         {
+            //Getting and initialising 
             var services = new ServiceCollection()
                 .AddSingleton<DiscordSocketClient>()
                 .AddSingleton(typeof(CommandService),
