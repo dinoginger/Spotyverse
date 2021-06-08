@@ -11,6 +11,7 @@ namespace SpotifyBot.Service.Spotify
     {
         private EmbedIOAuthServer _server;
         public SpotifyClient _client;
+        public LoginRequest _request;
 
         public async Task Auth()
         {
@@ -25,7 +26,8 @@ namespace SpotifyBot.Service.Spotify
             {
                 Scope = new List<string> { Scopes.UserReadEmail }
             };
-            BrowserUtil.Open(request.ToUri());
+            _request = request;
+
         }
 
         private async Task OnImplicitGrantReceived(object sender, ImplictGrantResponse response)
@@ -37,6 +39,7 @@ namespace SpotifyBot.Service.Spotify
 
         private async Task OnErrorReceived(object sender, string error, string state)
         {
+            
             await _server.Stop();
             throw new AuthException($"Aborting authorization, error received: {error}");
             

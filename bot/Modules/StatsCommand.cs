@@ -15,9 +15,9 @@ namespace SpotifyBot.Modules
             SpotifyService spotifyService = new SpotifyService();
             try
             {
-                await Context.Channel.SendMessageAsync("Authorize [here](http://localhost:5000/callback)");
                 await spotifyService.Auth();
-                Thread.Sleep(30);
+                await Context.Channel.SendMessageAsync(spotifyService._request.ToUri().ToString());
+                Thread.Sleep(10000);
 
             }
             catch (Exception e)
@@ -26,11 +26,11 @@ namespace SpotifyBot.Modules
                 return MyCommandResult.FromError(e.Message);
             }
 
-            if (spotifyService._client != null)
-            {
+            
+            
                 Context.Channel.SendMessageAsync(
                     $"Hi, {spotifyService._client.UserProfile.Current().Result.DisplayName}!");
-            }
+            
 
             return MyCommandResult.FromSuccess();
         }
