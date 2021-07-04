@@ -27,7 +27,6 @@ namespace SpotifyBot.Service
                 .AddSingleton<ListenUsersList>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<LoggingService>()
-                .AddSingleton<SpotifyService>()
                 .AddLogging(configure => configure.AddSerilog()); //Registering ILogger to use in any other injected service element
 
             
