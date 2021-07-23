@@ -48,7 +48,7 @@ namespace SpotifyBot
 
 
         private readonly string configPath = @".\_config.json";
-        private readonly string t_configPath = @"C:\Users\Марко\OneDrive\Desktop\Discord\TestBotStuff\TestBot_\bot\t_config.json";
+        private readonly string t_configPath = @"/Users/marco/Desktop/Spotyverse/bot/t_config.json";
         
         private string bot_token;
         public static string invite_link;
