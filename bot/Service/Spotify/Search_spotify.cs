@@ -26,13 +26,12 @@ namespace SpotifyBot.Service.Spotify
             EmbedBuilder embedBuilder = new EmbedBuilder();
 
             //Getting tokens from our json.
-            GetSpotifyTokens();
             try
             {
                 //Connection of Bot client
                 var config = SpotifyClientConfig
                     .CreateDefault()
-                    .WithAuthenticator(new ClientCredentialsAuthenticator(Bot_id, Bot_ids));
+                    .WithAuthenticator(new ClientCredentialsAuthenticator(app_id, app_ids));
                 spotify = new SpotifyClient(config);
             }
             catch (APIUnauthorizedException e)

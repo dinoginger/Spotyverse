@@ -12,9 +12,10 @@ namespace SpotifyBot.Service
     public class service
     {
         private readonly DiscordSocketClient _client;
-        
+
         public static ServiceProvider BuildServiceProvider()
         {
+            //Getting and initialising 
             var services = new ServiceCollection()
                 .AddSingleton<DiscordSocketClient>()
                 .AddSingleton(typeof(CommandService),
@@ -26,7 +27,6 @@ namespace SpotifyBot.Service
                 .AddSingleton<ListenUsersList>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<LoggingService>()
-                .AddSingleton<SpotifyService>()
                 .AddLogging(configure => configure.AddSerilog()); //Registering ILogger to use in any other injected service element
 
             

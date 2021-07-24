@@ -11,12 +11,8 @@ namespace SpotifyBot.Modules
     public class SearchCommand : ModuleBase<SocketCommandContext>
     {
         private SpotifyService spotifyService;
-        public SearchCommand(IServiceProvider serviceProvider)
-        {
-            spotifyService = serviceProvider.GetRequiredService<SpotifyService>();
-        }
-        
-        
+
+
         [Command("search")]
         
         [MyRatelimit(3, 30,MyMeasure.Seconds)]
