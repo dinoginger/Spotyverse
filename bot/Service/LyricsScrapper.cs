@@ -2,20 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HtmlAgilityPack;
+using Genius;
+
 using Microsoft.VisualBasic;
 
 namespace SpotifyBot.Service
 {
     public class LyricsScrapper
-    {
-        public static string Get(string request)
+    {/// <summary>
+     /// Gets url from genius and later scraps lyrics div class from downloaded uri's html
+     /// </summary>
+     /// <param name="request"></param>
+     /// <returns>song lyrics in a string</returns>
+        public static string Get(string request) 
+            
         {
             try
             {
+                GeniusClient geniusClient = new GeniusClient("uXdLEYWbhLVh8vVTykbuqDVGpJ_18rcKbszqWUxZTGk4CSjK_bZUUaZ82nFzF_DL");
                 string result = null;
-                // Forming url for lyrics
-                string query = request.Replace(" ", "-");
-                string url = $"https://genius.com/{query}-lyrics";
+                // Getting url for lyrics
+                request = CleanRequest(request);
+                Console.WriteLine("final request --- " + request);
+                var return_data = geniusClient.SearchClient.Search(request);
+                string url = return_data.Result.Response.Hits[0].Result.Url;
 
                 // declaring & loading doc
                 HtmlWeb web = new HtmlWeb();
@@ -33,5 +43,27 @@ namespace SpotifyBot.Service
             }
 
         }
+     /// <summary>
+     /// This is supposed to clean request from stuff which can cause search failure.
+     /// Examples : Remastered (2011), Live at Boston, (Bad Computer Mix)
+     /// </summary>
+     /// <param name="request"></param>
+
+        private static string CleanRequest(string request)
+     {
+         string[] words = new[] {"REMASTERED", "REMIX", "LIVE AT", "MIX", "COVER", };
+         request = request.ToUpper();
+         foreach (var word in words)
+         {
+             if (request.Contains(word))
+             {
+                 request = request.TrimEnd(word.ToCharArray());
+                 Console.WriteLine(request);
+                 return request;
+             }
+         }
+
+         return request;
+     }
     }
 }
