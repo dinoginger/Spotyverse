@@ -5,6 +5,7 @@ using HtmlAgilityPack;
 using Genius;
 
 using Microsoft.VisualBasic;
+using SpotifyBot.Service.Spotify;
 
 namespace SpotifyBot.Service
 {
@@ -24,7 +25,7 @@ namespace SpotifyBot.Service
         {
             try
             {
-                GeniusClient geniusClient = new GeniusClient("uXdLEYWbhLVh8vVTykbuqDVGpJ_18rcKbszqWUxZTGk4CSjK_bZUUaZ82nFzF_DL");
+                GeniusClient geniusClient = new GeniusClient(SpotifyService.genius_app_key);
                 string result = null;
                 // Getting url for lyrics
                 request = CleanRequest(request);
