@@ -8,6 +8,11 @@ using Microsoft.VisualBasic;
 
 namespace SpotifyBot.Service
 {
+    //TODO : Work on error handling (especially line 34 here).
+    
+    //TODO : New type of error :  Message content is too long, length must be less or equal to 2000. (Parameter 'Content'). Fix it as well
+
+    //
     public class LyricsScrapper
     {/// <summary>
      /// Gets url from genius and later scraps lyrics div class from downloaded uri's html
