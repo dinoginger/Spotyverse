@@ -11,6 +11,7 @@ Command (and syntax)| What it does
 <<help | Prints list of supported commands
 <<invite | Sends your bot invite link in DMs
 <<search (string search_request) | Returns formatted embed, for artist/album/track info request.
+<<lyrics | Returns embed with lyrics of song, currently shown by your Spotify activity.
 <<listen (int n) | Invokes async command, which lasts for (int n) minutes and checks current users Spotify discord activity. Returns music taste analyzis in embed (NOTE : Your Spotify account must be connected to Discord)
 <<listen (int n, String user) | Checks the activity for a user (String user).
 
