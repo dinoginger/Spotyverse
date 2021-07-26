@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 using Genius;
 
@@ -19,8 +20,9 @@ namespace SpotifyBot.Service
      /// Gets url from genius and later scraps lyrics div class from downloaded uri's html
      /// </summary>
      /// <param name="request"></param>
-     /// <returns>song lyrics in a string</returns>
-        public static string Get(string request) 
+     /// <returns>Item1 : formatted lyrics
+     /// Item2 : thumbnail lyrics</returns>
+        public static Tuple<string, string> Get(string request) 
             
         {
             try
@@ -40,7 +42,11 @@ namespace SpotifyBot.Service
 
                 result = doc.DocumentNode.SelectSingleNode("//div[contains(@class, 'lyrics')]").InnerText;
                 
-                return result;
+                string formatted = Regex.Replace(result, @"[\n  ]{2,}", "\n");
+                Console.WriteLine(formatted);
+                Console.WriteLine(formatted.Length);
+                return new Tuple<string, string>(formatted, return_data.Result.Response.Hits[0].Result.HeaderImageUrl);
+                
             }
             catch (Exception e)
             {

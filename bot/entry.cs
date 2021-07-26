@@ -90,5 +90,6 @@ namespace SpotifyBot
             invite_link = config_file.Invite_link;
             return config_file.TestBot_token;
         }
+        //todo: Look up into all the warnings and resolve some of em
     }
 }

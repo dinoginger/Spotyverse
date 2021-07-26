@@ -29,9 +29,23 @@ namespace SpotifyBot.Modules
                 {
                     if (activity is SpotifyGame spot)
                     {
+                        
                         Spotify_exists = true;
-                        string lyrics = LyricsScrapper.Get(new string(spot.Artists.First() + " " + spot.TrackTitle));
-                        await Context.Channel.SendMessageAsync(lyrics, false);
+                        var results = LyricsScrapper.Get(new string(spot.Artists.First() + " " + spot.TrackTitle));
+                        //building embed
+                        Random random = new Random();
+                        EmbedBuilder embed = new EmbedBuilder();
+                        var footer = new EmbedFooterBuilder();
+                        footer.Text += $"for {user.Username}";
+                        footer.IconUrl += user.GetAvatarUrl();
+                        //todo: Due to limitation of descritption to 2048, suggest breaking verses into fields and adding fields to embed OR THING ABOUT PAGINATION
+                        embed.WithFooter(footer);
+                        embed.WithThumbnailUrl(results.Item2);
+                        embed.AddField("lyrics","", false);
+                        embed.WithDescription(results.Item1);
+                        embed.WithColor(random.Next(0, 255), random.Next(0, 255), random.Next(0, 255));
+
+                        await Context.Channel.SendMessageAsync("",false, embed.Build());
                         return MyCommandResult.FromSuccess();
                     }
                 }
