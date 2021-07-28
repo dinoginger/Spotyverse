@@ -1,6 +1,7 @@
 ﻿using System;
 using Discord.Commands;
 using Discord.WebSocket;
+using Interactivity;
 using SpotifyBot.Service.Spotify;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -24,6 +25,8 @@ namespace SpotifyBot.Service
                         IgnoreExtraArgs = true,
                         CaseSensitiveCommands = false,
                     }))
+                .AddSingleton<InteractivityService>()
+                .AddSingleton(new InteractivityConfig { DefaultTimeout = TimeSpan.FromSeconds(20) }) //interactive module to work
                 .AddSingleton<ListenUsersList>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<LoggingService>()
