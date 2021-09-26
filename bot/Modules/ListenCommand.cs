@@ -34,7 +34,6 @@ namespace SpotifyBot.Modules
 
         public ListenCommand(IServiceProvider serviceProvider)
         {
-            spotify = serviceProvider.GetRequiredService<SpotifyService>();
             _listenUsersList = serviceProvider.GetRequiredService<ListenUsersList>();
             _dictionary= _listenUsersList._UsrDict;
         }

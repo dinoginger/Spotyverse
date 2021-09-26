@@ -84,11 +84,12 @@ namespace SpotifyBot
 
         private string GetToken()
         {
-            StreamReader r = new StreamReader(configPath);
+            StreamReader r = new StreamReader(t_configPath);
             string json = r.ReadToEnd();
             dynamic config_file = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
             invite_link = config_file.Invite_link;
             return config_file.TestBot_token;
         }
+        //todo: Look up into all the warnings and resolve some of em
     }
 }

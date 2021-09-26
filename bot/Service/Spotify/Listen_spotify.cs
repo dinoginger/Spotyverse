@@ -24,13 +24,11 @@ namespace SpotifyBot.Service.Spotify
     /// <exception cref="ArgumentException"></exception>
     public async Task<Tuple<int,int, string>> Listen(string songName)
         {
-            
-            GetSpotifyTokens();
 
             //Connection of Bot client
             var config = SpotifyClientConfig.CreateDefault();
             var request =
-                new ClientCredentialsRequest(Bot_id, Bot_ids);
+                new ClientCredentialsRequest(app_id, app_ids);
             var response = await new OAuthClient(config).RequestToken(request);
             var spotify = new SpotifyClient(config.WithToken(response.AccessToken));
             // --- 

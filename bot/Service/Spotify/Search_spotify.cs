@@ -16,23 +16,18 @@ namespace SpotifyBot.Service.Spotify
         private SpotifyClient spotify;
         public async Task<EmbedBuilder> Search(string requestString, SocketUser socketUser)
         {
-            string song_name;
-            string album_name;
-            int popuarity;
 
             user = socketUser;
-            string artistname;
             string genres_string = "";
             EmbedBuilder embedBuilder = new EmbedBuilder();
 
             //Getting tokens from our json.
-            GetSpotifyTokens();
             try
             {
                 //Connection of Bot client
                 var config = SpotifyClientConfig
                     .CreateDefault()
-                    .WithAuthenticator(new ClientCredentialsAuthenticator(Bot_id, Bot_ids));
+                    .WithAuthenticator(new ClientCredentialsAuthenticator(app_id, app_ids));
                 spotify = new SpotifyClient(config);
             }
             catch (APIUnauthorizedException e)
