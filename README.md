@@ -14,7 +14,7 @@ Command (and syntax)| What it does
 <<listen (int n) | Invokes async command, which lasts for (int n) minutes and checks current users Spotify discord activity. Returns music taste analyzis in embed (NOTE : Your Spotify account must be connected to Discord)
 <<listen (int n, String user) | Checks the activity for a user (String user).
 
-## Instalation
+## Set up
 1. You need to create your Spotify application
 2. Get tokens for Spotify service from [here](https://developer.spotify.com/dashboard/applications).
 3. Get token from Discord
