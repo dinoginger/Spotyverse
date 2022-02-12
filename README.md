@@ -5,7 +5,7 @@ Analyses your music taste and provides information about songs and artists.
 
 ## Usage
 Prefix for commands is _"<<"_.
-Here is the  small list of stuff it can do : 
+Here is the  short list of stuff it can do : 
 Command (and syntax)| What it does
 ------------ | -------------
 <<help | Prints list of supported commands
